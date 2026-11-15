@@ -1,0 +1,8 @@
+node_modules/
+临时/
+归档/
+产出/
+*.log
+*.tgz
+.DS_Store
+Thumbs.db

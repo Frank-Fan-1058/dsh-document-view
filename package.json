@@ -1,0 +1,36 @@
+{
+  "name": "dsh-document-view",
+  "version": "1.0.0",
+  "description": "Split document view for DeepSeek Harness: document in the center, conversation on the right.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": { "default": "./client.js" },
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "icon.svg",
+    "locale/*.json",
+    "docs",
+    "src",
+    "scripts"
+  ],
+  "engines": { "node": ">=20" },
+  "keywords": ["dsh", "deepseek-harness", "plugin", "bundle", "document", "split-view"],
+  "repository": { "type": "git", "url": "https://github.com/Frank-Fan-1058/dsh-document-view.git" },
+  "bugs": { "url": "https://github.com/Frank-Fan-1058/dsh-document-view/issues" },
+  "homepage": "https://github.com/Frank-Fan-1058/dsh-document-view#readme",
+  "license": "MIT",
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": { "platform": "web" }
+  }
+}
