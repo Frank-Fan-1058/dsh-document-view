@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Document view",
+    "description": "Adds a split document view to DeepSeek Harness: the document stays in the center while the current conversation remains on the right. Open a file from the right sidebar, then enable 'Document view' in the conversation header actions (or the file tab actions); the arrow next to it opens settings, including 'Auto-enter on document view' (off by default). Drag the divider to resize; Left/Right arrows adjust and Home resets the ratio. In a narrow window, switch between Document and Chat. Preferences are saved per session. Editing, saving, and preview continue to use DSH's native document and Office viewers — this plugin only changes layout and never writes to your files. Disabling it restores the default layout. Tested on DSH Desktop 0.2.2-rc.3; it relies on the host's DOM structure and may need re-verification after a DSH upgrade.",
+    "detail": "docs/DETAIL.md"
+  }
+}
