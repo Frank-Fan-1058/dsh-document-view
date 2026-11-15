@@ -1,8 +1,29 @@
 // Mounted components stay in their original React ownership tree. Only the shell's
 // grid geometry changes; no node is moved, cloned, or remounted by this module.
+
+// Fail closed: this plugin depends on internal host services and DOM data
+// attributes that are not a public API. If a future DSH release changes them,
+// disable the plugin silently instead of throwing inside the module loader,
+// so the host page keeps working. See docs/COMPATIBILITY.md for the checklist.
+function hostContractIntact(scoped) {
+  const slots = scoped?.slots;
+  const sidebar = scoped?.sidebarRight;
+  if (typeof scoped?.effect !== 'function') return false;
+  if (!slots || typeof slots.inject !== 'function' || typeof slots.register !== 'function') return false;
+  if (!sidebar || typeof sidebar.isExpanded !== 'function') return false;
+  for (const store of [sidebar.mounted, sidebar.openTabs]) {
+    if (!store || typeof store.getSnapshot !== 'function' || typeof store.subscribe !== 'function') return false;
+  }
+  return true;
+}
+
 export function installDocumentCollaboration(ctx, require) {
   if (typeof window === 'undefined') return;
   ctx.inject(['slots', 'sidebarRight'], scoped => {
+    if (!hostContractIntact(scoped)) {
+      console.warn('[dsh-document-view] client host contract changed; plugin disabled safely. See docs/COMPATIBILITY.md');
+      return;
+    }
     scoped.effect(() => {
       const React = require('react');
       const { createPortal } = require('react-dom');
