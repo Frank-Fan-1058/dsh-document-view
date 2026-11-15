@@ -22,6 +22,15 @@ jobs:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
+      # setup-node ships npm 10.x, which predates OIDC trusted publishing.
+      # npm >= 11.5.1 is required or the publish silently goes unauthenticated
+      # and the registry answers 404 instead of a credential error.
+      - name: Upgrade npm for trusted publishing
+        run: |
+          npm install -g npm@^11.6.0
+          npm --version
+          test "$(npm --version | cut -d. -f1)" -ge 11
+
       # Fail fast if the committed client.js is stale or a secret slipped in.
       - name: Verify
         run: node scripts/verify.mjs
