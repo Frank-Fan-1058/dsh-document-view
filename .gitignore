@@ -1,4 +1,5 @@
 node_modules/
+.npmrc
 临时/
 归档/
 产出/
