@@ -52,18 +52,9 @@ node scripts/build.mjs
 - 停用插件即恢复默认布局。
 - 完整口径见 `locale/en.json` / `locale/zh.json` 的 `meta.description`。
 
-## 发布到 GitHub（仓库所有者执行）
+## 发布状态
 
-本地已 `git init` + 首次提交 + 打 `v1.0.0` tag。到 [github.com/new](https://github.com/new) 建一个名为 `dsh-document-view` 的**空**仓库（不要勾 README / LICENSE，避免冲突），然后：
-
-```sh
-git remote add origin https://github.com/Frank-Fan-1058/dsh-document-view.git
-git branch -M main
-git push -u origin main
-git push origin v1.0.0
-```
-
-之后在仓库 **Releases → Draft a new release** 选 `v1.0.0` tag 发布即可。
+v1.0.0 已发布到 https://github.com/Frank-Fan-1058/dsh-document-view （`main` 分支 + `v1.0.0` tag 均已推送）。后续升级只需本地提交、打新 tag、`git push origin main && git push origin <新tag>`，再到 **Releases → Draft a new release** 选该 tag 发布。
 
 ## 许可证
 
