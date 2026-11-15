@@ -1,6 +1,6 @@
 {
   "name": "dsh-document-view",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Split document view for DeepSeek Harness: read a document in the center while the conversation stays on the right.",
   "type": "module",
   "main": "index.js",
