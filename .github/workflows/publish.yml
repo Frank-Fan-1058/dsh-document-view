@@ -1,0 +1,30 @@
+name: Publish to npm
+
+# Trusted publishing: no NPM_TOKEN secret, no token expiry.
+# npm verifies this workflow's OIDC identity instead.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # required for the OIDC handshake
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Fail fast if the committed client.js is stale or a secret slipped in.
+      - name: Verify
+        run: node scripts/verify.mjs
+
+      - name: Publish
+        run: npm publish --access public --provenance
