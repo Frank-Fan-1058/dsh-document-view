@@ -11,7 +11,8 @@ const dry = process.argv.includes('--dry-run');
 
 const run = (bin, args, opts = {}) => {
   console.log(`\n$ ${bin} ${args.join(' ')}`);
-  return execFileSync(bin, args, { cwd: root, stdio: 'inherit', shell: true, ...opts }).toString();
+  // stdio: 'inherit' returns null, so never call .toString() on the result.
+  execFileSync(bin, args, { cwd: root, stdio: 'inherit', shell: true, ...opts });
 };
 
 console.log(`Publishing ${pkg.name}@${pkg.version} (pure CLI)`);

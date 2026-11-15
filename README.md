@@ -3,7 +3,7 @@
 **边看文档，边聊 AI。** 给 [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 加一个分栏视图：文档居中，当前会话留在右侧，不用再来回切换。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/Frank-Fan-1058/dsh-document-view/releases)
+[![npm](https://img.shields.io/npm/v/dsh-document-view.svg)](https://www.npmjs.com/package/dsh-document-view)
 [![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.3-4c51bf.svg)](https://github.com/deepseek-ai/DeepSeek-Harness/releases/tag/dsh-v0.2.2-rc.3)
 [![Platform](https://img.shields.io/badge/platform-Web%20%2F%20Desktop-lightgrey.svg)](#要求)
 
@@ -78,14 +78,17 @@ Markdown、PDF、Word、Excel、PPT 的渲染、编辑、保存与预览，全�
 
 ## 安装
 
-**方式零：npm 安装（发布后可用，解锁一键安装）**
+**方式零：从 npm 安装（已发布，解锁一键安装）**
 
 ```sh
-# 1024 Store 的安装方式（需已发布到 npm）
+# 1024 Store 的安装方式
 dsh1024 plugin --profile web add dsh-document-view
+
+# 或直接走官方 CLI
+dsh plugin --profile web add dsh-document-view
 ```
 
-> 目前 npm 上尚未发布，请先用下面的方式一 / 二。
+包地址：https://www.npmjs.com/package/dsh-document-view
 
 **方式一：本地目录安装（最简单）**
 
