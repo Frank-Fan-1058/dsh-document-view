@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.1.1 (2026-11-15)
+
+- 发布流程改为 npm trusted publishing（GitHub Actions OIDC），不再依赖会过期的 npm 令牌。
+- 本版用于验证 trusted publisher 连接（npm 要求首次发布后连接才生效）。
+
 ## v1.1.0 (2026-11-15)
 
 - 文档：中英文双语 README、三张脱敏界面示意图、安全与隐私说明、兼容性说明、插件市场上架指南、目录条目模板。
