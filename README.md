@@ -78,6 +78,15 @@ Markdown、PDF、Word、Excel、PPT 的渲染、编辑、保存与预览，全�
 
 ## 安装
 
+**方式零：npm 安装（发布后可用，解锁一键安装）**
+
+```sh
+# 1024 Store 的安装方式（需已发布到 npm）
+dsh1024 plugin --profile web add dsh-document-view
+```
+
+> 目前 npm 上尚未发布，请先用下面的方式一 / 二。
+
 **方式一：本地目录安装（最简单）**
 
 ```sh
