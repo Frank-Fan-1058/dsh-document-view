@@ -17,8 +17,8 @@
 | 1024 Store / awesome 目录 | [PR #942](https://github.com/imsai-sh/awesome-deepseek-harness-plugins/pull/942) 静态审查通过后**已自动合并**，条目进 main |
 | dsh-market 数据源 | [PR #15514](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/15514) 已提交，待维护者人工审核（该目录要求仓库创建满 1 天，仓库 2026-11-15 07:17Z 创建，约 11-16 07:17Z 后满足） |
 | 介绍帖 | [Discussions #1](https://github.com/Frank-Fan-1058/dsh-document-view/discussions/1) 已发布（Show and tell） |
-| npm publish | **已发布** `dsh-document-view@1.1.0`，registry `dist-tags.latest = 1.1.0`，含 `dsh.bundle.patch` 与 MIT 许可，26 个文件 |
-| 免令牌发布 | `.github/workflows/publish.yml` 已提交（Actions 已识别为 active）；npm trusted publisher 连接待授权（网页配置时会要求确认密码，需用户本人操作） |
+| npm publish | **已发布** `dsh-document-view@1.1.1`，`dist-tags.latest = 1.1.1`，带 SLSA provenance 与 attestations，26 个文件 |
+| 免令牌发布 | **已打通**：trusted publisher 已连接 `Frank-Fan-1058/dsh-document-view` + `publish.yml`；v1.1.1 由 Actions OIDC 发布成功，不再需要任何令牌 |
 
 外网可达（GitHub / npm / npmmirror 均 200），CATVPN 本就运行，未额外打开。GitHub 侧全部通过本机 GCM 凭据 + REST/GraphQL API 完成。
 
@@ -30,8 +30,14 @@
 
 ## 待办
 
-- 用户在 npm 包设置页完成 trusted publisher 授权（需输入账号密码确认），之后打 tag 即由 Actions 自动发布。
-- PR #15514：CI 已明确唯一失败项是「仓库创建不足 1 天」，会自动复检通过（约 11-16 07:17Z 后）。
+- 已无阻塞项：打 tag + 建 Release 即由 Actions 自动发布（无需令牌）。
+- PR #15514：CI 唯一失败项是「仓库创建不足 1 天」，会自动复检通过（约 11-16 07:17Z 后）。
 - 1024 Store 尚未切到 npm 安装命令，等其目录同步周期刷新。
 - 每次 DSH 升级按 `docs/COMPATIBILITY.md` 的升级复核清单重验。
+
+## 网络踩坑（2026-11-15）
+
+- 本机 `curl` 走系统代理（`127.0.0.1:7890`）能通，但 **`git` 不走系统代理** → 表现为 curl 200 而 git push 连不上。
+- 给 git 显式加代理（`-c http.proxy=http://127.0.0.1:7890`）后，Windows 默认的 schannel TLS 后端会报 `failed to receive handshake`；改 `GIT_SSL_BACKEND=openssl` 即可正常 fetch/push。
+- 完整可用组合：`GIT_SSL_BACKEND=openssl git -c http.proxy=http://127.0.0.1:7890 <cmd>`。
 
