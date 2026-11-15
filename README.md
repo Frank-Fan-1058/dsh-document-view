@@ -104,7 +104,7 @@ git clone https://github.com/Frank-Fan-1058/dsh-document-view.git
 npm pack
 ```
 
-把生成的 `dsh-document-view-1.1.0.tgz` 解压到任意目录，再按方式一第 2 步指向该目录。
+把生成的 `dsh-document-view-1.1.1.tgz` 解压到任意目录，再按方式一第 2 步指向该目录。
 
 **方式三：从源码构建**
 
