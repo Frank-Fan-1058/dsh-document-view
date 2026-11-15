@@ -89,7 +89,7 @@ Then in DSH: **Plugins → Add plugin**, pick the `dsh-document-view` directory,
 npm pack
 ```
 
-Extract `dsh-document-view-1.1.0.tgz` anywhere, then point step 2 of Option 1 at that directory.
+Extract `dsh-document-view-1.1.1.tgz` anywhere, then point step 2 of Option 1 at that directory.
 
 **Option 3 — build from source**
 
