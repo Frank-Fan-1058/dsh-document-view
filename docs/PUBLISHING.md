@@ -57,8 +57,30 @@
 
 1024 Store **只提供 npm 安装**：网站探测 manifest 声明的包名，只要 npm 上的 latest 版本声明了 `dsh.bundle` 就显示安装命令。未发 npm 的插件仍会收录，但只有仓库链接。
 
+### 纯 CLI 发布（推荐，不用开浏览器）
+
+**一次性准备**：在 npmjs.com → Access Tokens 建一个 Granular Access Token（只勾这个包的 publish 权限），然后在终端设置一次：
+
 ```sh
-npm login                      # 需要你自己的 npm 账号
+export NODE_AUTH_TOKEN=<你的 npm 令牌>       # macOS / Linux
+# Windows PowerShell: $env:NODE_AUTH_TOKEN = "<你的 npm 令牌>"
+```
+
+之后每次发版都是纯命令行，不再需要浏览器：
+
+```sh
+node scripts/publish-npm.mjs            # 校验 + npm pack --dry-run + publish
+node scripts/publish-npm.mjs --dry-run # 只校验，不发布
+```
+
+脚本会先 `npm whoami` 验证凭据、跑 25 项 `verify.mjs` 断言、`npm pack --dry-run` 核对文件清单，再 `npm publish --access public`。**令牌不写进仓库、不回显、不进日志**。
+
+浏览器只用于「一次性登录」的替代路径（`npm login --auth-type=web`），登录完成后 `.npmrc` 存下凭据，后续同样是纯 CLI。
+
+### 首次手工发布
+
+```sh
+npm login                      # 需要你自己的 npm 账号（一次性）
 npm pack --dry-run             # 先核对发布文件清单
 npm publish --access public
 ```
