@@ -3,7 +3,7 @@
 **Read your document and talk to your AI at the same time.** A split document view for [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness): the document stays in the center, the current conversation stays on the right — no more tab hopping.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/Frank-Fan-1058/dsh-document-view/releases)
+[![npm](https://img.shields.io/npm/v/dsh-document-view.svg)](https://www.npmjs.com/package/dsh-document-view)
 [![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.3-4c51bf.svg)](https://github.com/deepseek-ai/DeepSeek-Harness/releases/tag/dsh-v0.2.2-rc.3)
 
 ![Document view: document in the center, conversation on the right](docs/screenshots/01-overview.png)
