@@ -1,61 +1,138 @@
 # dsh-document-view
 
-给 DeepSeek Harness 用的第三方插件：打开文件时**文档居中**，当前会话**留在右侧**，边看文档边聊。
+**边看文档，边聊 AI。** 给 [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 加一个分栏视图：文档居中，当前会话留在右侧，不用再来回切换。
 
-![分栏效果](docs/preview.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/Frank-Fan-1058/dsh-document-view/releases)
+[![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.3-4c51bf.svg)](https://github.com/deepseek-ai/DeepSeek-Harness/releases/tag/dsh-v0.2.2-rc.3)
+[![Platform](https://img.shields.io/badge/platform-Web%20%2F%20Desktop-lightgrey.svg)](#要求)
 
-> 从一个本机自用的文档协作插件抽出，重新命名、补齐 DSH 展示元数据与开源许可后发布。功能代码与已稳定运行版本一致，仅改了标识符与本地存储键。
+![文档视图：中间是文档，右侧是当前会话](docs/screenshots/01-overview.png)
 
-## 功能
+> 界面图为**脱敏示意图**，使用通用占位内容绘制，不含任何真实会话、文件名、账号或个人数据。
 
-- 中间看文档、右侧保留对话；拖动分隔线调宽度，左右方向键微调、Home 复位。
-- 会话头部 / 文件标签上的「文档视图」开关；旁边箭头进设置，可选「查看文档时自动进入」（默认关）。
-- 窄窗口在「文档 / 对话」间切换，未发送的输入不丢。
-- 开关与比例按会话保存。
-- **只改布局**：编辑、保存、预览继续用 DSH 原生文档 / Office 查看器，插件不读写你的文件。
+[English version →](README.en.md) · [插件市场上架指南 →](docs/PUBLISHING.md) · [兼容性与安全说明 →](docs/COMPATIBILITY.md)
+
+---
+
+## 为什么需要它
+
+在 DSH 里打开一个文件，文档会占满右侧栏，正在进行的对话被挤走。想让 AI 对照文档解释、总结、改写，就得在「看文档」和「看对话」之间反复切换，上下文一直在丢。
+
+`dsh-document-view` 只做一件事：**把这两块同时留在屏幕上**。它不接管编辑器，不改动保存逻辑，也不碰你的文件——只是重新排布窗口，让已有的原生文档 / Office 预览和对话框并排工作。
+
+| | 默认 | 开启文档视图后 |
+| --- | --- | --- |
+| 看文档 | 右侧栏独占 | 中间区域显示 |
+| 当前对话 | 被挤走 / 需切回 | 右侧始终可见 |
+| 让 AI 对照文档回答 | 来回切换 | 同屏完成 |
+| 编辑、保存、预览 | 原生功能 | **仍是原生功能** |
+
+## 核心能力
+
+### 1. 文档与对话同屏
+
+![分栏与可调分隔线](docs/screenshots/01-overview.png)
+
+打开任意文件后，在会话头部或文件标签的操作区点 **「文档视图」** 即可开启。拖动中间的分隔线调整宽度，也可以用 `←` / `→` 微调、`Home` 复位、双击分隔线恢复默认比例。开关和比例**按会话分别记住**。
+
+### 2. 设置与自动进入
+
+![文档视图设置](docs/screenshots/02-settings.png)
+
+开关旁边的箭头打开设置：
+
+- **查看文档时自动进入**（默认关闭）：只在你主动点击文件或文件标签时触发，后台文件操作不会打扰你；手动退出后，同一个文件不会反复自动打开。
+- **文档优先 / 均衡 / 对话优先** 三种预设，按会话保存。
+- **自动更新 / 已暂停**：沿用宿主原生的文件变化监听，需要仔细阅读时可暂停跟随，继续后显示最新内容，并保留原生预览的页码与缩放状态。
+
+### 3. 窄窗口也能用
+
+![窄窗口下的文档 / 对话切换](docs/screenshots/03-narrow.png)
+
+窗口不够宽时自动切换为「文档 / 对话」单栏切换，**未发送的输入不会丢**；宽转窄时若焦点落在即将隐藏的区域，会移到可见的切换按钮上。
+
+### 4. 只用原生能力
+
+Markdown、PDF、Word、Excel、PPT 的渲染、编辑、保存与预览，全部继续由 DSH 自带的查看器和 Office 引擎负责。本插件**不读取、不写入、不上传**你的文件，也不重复实现任何编辑功能。停用插件即恢复默认布局。
+
+## 隐私与安全
+
+这一点值得单独说清楚，因为插件会接触你的工作界面：
+
+- **零网络请求**：代码里没有 `fetch`、`XMLHttpRequest`、`WebSocket`，也没有任何外部 URL。
+- **零文件访问**：不调用任何读写文件的接口，不碰编辑器内容。
+- **零凭据**：包内不含 API Key、Token、密码、Cookie 或任何密钥；没有 `.env`、没有配置文件。
+- **只存一项偏好**：用浏览器 `localStorage` 保存「自动进入开关 + 每个会话的分栏比例」，键名 `dsh.document-view.v1`，不保存文档内容、路径、文件名或对话内容。
+- **作用域收窄**：所有样式都限定在插件自己加的 `[data-fdc-*]` 属性下，不改宿主全局样式；不移动、不克隆、不重新挂载任何 React 组件，只调整窗口网格的几何尺寸。
+
+详见 [SECURITY.md](SECURITY.md) 与 [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md)。
 
 ## 要求
 
-- DeepSeek Harness 桌面版（已在 `0.2.2-rc.3` 验证）
-- Node.js >= 20（仅从源码重建时需要）
+- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 桌面版 / Web 版，**v0.2.2-rc.3**（当前官方最新 release）上验证通过。
+- Node.js >= 20 —— **仅从源码重建时需要**；单纯安装使用不需要 Node.js。
+- 不设 `engines.dsh` 硬约束：版本约束写错会直接阻止安装，兼容性声明放在本文档与 [兼容性说明](docs/COMPATIBILITY.md)。
 
-## 安装（第三方）
+> 插件依赖宿主的 DOM 结构与 slot 名称。DSH 升级后若这些内部结构变化，插件会**自动停用并保持页面可用**（不会白屏），随后按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 重验即可。
 
-**方式一：本地目录安装（推荐）**
+## 安装
 
-1. `git clone https://github.com/Frank-Fan-1058/dsh-document-view.git`
-2. 打开 DSH → **插件 → 添加插件**，选中刚 clone 出来的 `dsh-document-view` 目录。
-3. 在插件列表启用 `dsh-document-view`，刷新网页（或重启 DSH）后生效。
+**方式一：本地目录安装（最简单）**
 
-**方式二：打成 tarball**
+```sh
+git clone https://github.com/Frank-Fan-1058/dsh-document-view.git
+```
+
+然后打开 DSH → **插件 → 添加插件**，选中 `dsh-document-view` 目录 → 在插件列表启用 → 刷新页面（或重启 DSH）。
+
+**方式二：打包成 tarball**
 
 ```sh
 npm pack
 ```
 
-把生成的 `dsh-document-view-1.0.0.tgz` 解压到任意目录，再按方式一第 2 步指向该目录。
+把生成的 `dsh-document-view-1.1.0.tgz` 解压到任意目录，再按方式一第 2 步指向该目录。
 
-> `file:` 依赖是实体拷贝：改了源码要删掉 `node_modules/<包名>` 再重装，运行副本才会更新。
-
-## 从源码重建
+**方式三：从源码构建**
 
 ```sh
+npm install            # 仅构建时需要
 node scripts/build.mjs
 ```
 
-`src/` 是源码，`client.js` 是构建产物（自包含，内联全部 CSS，无运行时依赖）。**改 `src/` 后必须重建**并核对 `client.js`；不要手改 `client.js`。
+`src/` 是源码，`client.js` 是自包含构建产物（内联全部 CSS，无运行时依赖）。**改了 `src/` 必须重建** `client.js`，不要手改产物。
 
-## 兼容性 / 限制
+> `file:` 依赖是实体拷贝：改了源码要删掉 `node_modules/<包名>` 再重装，运行副本才会更新。
 
-- 依赖宿主 DOM 结构与 slot 名称，DSH 升级后可能需要重新验证。
-- 不修改 Univer、Office 转换服务或任何原生编辑器。
-- 停用插件即恢复默认布局。
-- 完整口径见 `locale/en.json` / `locale/zh.json` 的 `meta.description`。
+## 使用
 
-## 发布状态
+1. 在右侧栏打开一个文件（Markdown / PDF / Office 均可）。
+2. 点会话头部或文件标签上的 **「文档视图」**。
+3. 拖动分隔线调宽度；`←` / `→` 微调，`Home` 或双击分隔线复位。
+4. 点开关旁的箭头进设置，按需开启「自动进入」或选布局预设。
+5. 再点一次开关（或会话顶部 / 文件顶部的退出入口）即可退出，恢复默认布局。
 
-v1.0.0 已发布到 https://github.com/Frank-Fan-1058/dsh-document-view （`main` 分支 + `v1.0.0` tag 均已推送）。后续升级只需本地提交、打新 tag、`git push origin main && git push origin <新tag>`，再到 **Releases → Draft a new release** 选该 tag 发布。
+## 常见问题
+
+**会影响我已有的文档编辑器或 Office 插件吗？** 不会。本插件不改 Univer、Office 转换服务或任何原生编辑器，只调整窗口布局。
+
+**我的文件会被读取或上传吗？** 不会。插件不发网络请求、不读写文件，只保存开关与比例两项偏好。
+
+**关掉插件后布局会残留吗？** 不会。卸载时会移除所有注入的样式、属性、分隔线与监听，恢复宿主原生布局。
+
+**升级 DSH 后失效了怎么办？** 插件会安全地自动停用（页面照常可用）。请提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 并附上 DSH 版本，维护者按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 适配。
+
+**支持哪些文件类型？** 宿主原生支持什么就支持什么：Markdown、PDF、Word、Excel、PPT 等，本插件不做格式限制。
+
+## 上架插件市场
+
+想让更多人在 DSH 内直接搜到并安装？完整流程（含 1024 Store / dsh-market 的收录方式、`dsh-plugin` topic、npm 发布、目录 PR 模板）见 **[docs/PUBLISHING.md](docs/PUBLISHING.md)**。仓库内已备好可直接复用的 [目录条目](docs/awesome-dsh-catalog-entry.json)。
+
+## 参与贡献
+
+欢迎提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 与 PR。改 `src/` 后请一并提交重建后的 `client.js`；涉及界面文案时同步更新 `locale/en.json` 与 `locale/zh.json`。请勿在示意图或示例中放入真实会话、文件名、账号或个人数据。
 
 ## 许可证
 
-MIT
+[MIT](LICENSE) © 2026 dsh-document-view contributors

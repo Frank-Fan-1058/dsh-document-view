@@ -16,8 +16,15 @@ window.__ModuleLoader__.load({
   factory: (require) => {
 ${model}
 ${browser}
+    // Fail-safe activation: a future DSH release may change the module
+    // loader or host contract. Never let an unexpected error inside this
+    // plugin take down the page; disable it and report one clear line.
     function apply(ctx) {
-      installDocumentCollaboration(ctx, require)
+      try {
+        installDocumentCollaboration(ctx, require);
+      } catch (error) {
+        console.warn('[dsh-document-view] disabled safely after activation error:', error);
+      }
     }
     return { apply };
   }
