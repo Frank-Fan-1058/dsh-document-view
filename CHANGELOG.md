@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 文档（2026-11-16，未发版，仅仓库文档）
+
+- 重写中英文 README：价值前置、徽章行、目录、30 秒安装、适用人群、Star 引导、路线图。
+- 新增 `CONTRIBUTING.md` 与 Bug / Feature 两个 Issue 模板，降低参与门槛。
+- 同步 `ROADMAP.md`、`docs/COMPATIBILITY.md` 的当前事实（已收录目录、插件版本 1.1.1）。
+- 本批仅改文档，不重建 `client.js`、不升版本号。
+
 ## v1.1.1 (2026-11-15)
 
 - 发布流程改为 npm trusted publishing（GitHub Actions OIDC），不再依赖会过期的 npm 令牌。
