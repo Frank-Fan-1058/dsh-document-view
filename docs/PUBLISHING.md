@@ -107,19 +107,23 @@ npm publish --access public
 
 ## 提升曝光的可做事项
 
-- [ ] 仓库 **About** 写一句清晰描述 + 填 Homepage + 加 `dsh-plugin`、`deepseek-harness`、`dsh` 等 topic
-- [ ] README 首屏放一张能一眼看懂的界面图（本仓库已放）
-- [ ] 每次发版写清 Release notes，并打 `vN` tag
-- [ ] 中英文 README 都齐全
+- [x] 仓库 **About** 写一句清晰描述 + 填 Homepage + 加 `dsh-plugin`、`deepseek-harness`、`dsh` 等 topic
+- [x] README 首屏放一张能一眼看懂的界面图（三张脱敏示意图）
+- [x] 每次发版写清 Release notes，并打 `vN` tag
+- [x] 中英文 README 都齐全（价值前置、徽章、目录、30 秒安装、Star 引导）
+- [x] `CONTRIBUTING.md` + Bug / Feature 两个 Issue 模板，降低参与门槛
+- [x] 已发布到 npm（`dsh-document-view@1.1.1`），解锁一键安装
 - [ ] 在 DSH 社区 / 讨论区发一篇使用场景介绍（**对外发布前需你确认**）
 - [ ] 回复 Issue、按反馈迭代，保持仓库活跃
 
-## 需要你确认后我才能代做的动作
+## 已完成的对外动作（2026-11-15 / 11-16）
 
-以下都是**对外部服务的写操作**，本指南只准备材料、不擅自执行：
+以下为仓库维护者已执行、可在仓库页面核对的动作；本指南只记录，不再重复执行：
 
-1. 给 GitHub 仓库加 `dsh-plugin` topic
-2. `npm publish`（需要你的 npm 账号登录）
-3. Fork 目录仓库并创建 catalog PR
-4. 修改仓库 About 描述
-5. 在社区发帖宣传
+1. GitHub topics 已加（含 `dsh-plugin`）
+2. `npm publish` 已发布 1.1.1，改用 trusted publishing（Actions OIDC，无需令牌）
+3. 1024 Store / awesome 目录 catalog PR #942 已合并；dsh-market 数据源 PR 已提交待审
+4. 仓库 About 描述与 Homepage 已填（2026-11-16 按推广口径优化）
+5. Discussions #1 介绍帖已发布（Show and tell）
+
+> 社区推广帖、外部 IM / 邮件等**对外发送**动作仍需用户明确确认，本仓库文档不代为执行。
