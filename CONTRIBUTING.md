@@ -30,33 +30,28 @@ node scripts/verify.mjs
 
 Thanks for helping more DeepSeek Harness users read and chat on the same screen.
 
-## 提交说明规范（Commit message）
+## Commit message convention
 
-GitHub 文件列表里每一行显示的「备注」，就是**该文件最近一次提交说明**。为了让仓库一眼看得懂，提交说明统一按下面写（参考 DSH 生态高星仓库与 Conventional Commits）：
+GitHub shows, next to every file, the subject of **the last commit that touched it**. Keep subjects short and self-explanatory.
 
 ```
-<type>: <一句话说清这一件事>（不超过 50 字，中文优先）
+<type>: <one sentence, imperative, under 60 characters>
 ```
 
-type 只用这几种：
+Types: `feat` / `fix` / `refactor` / `perf` / `test` / `docs` / `chore` / `release`. Add a scope in parentheses only when the repo has several areas, e.g. `fix(desktop):`.
 
-- `feat` 新功能 / `fix` 修缺陷 / `refactor` 重构 / `test` 测试
-- `docs` 文档（README、指南、CHANGELOG、ROADMAP）
-- `chore` 构建 / CI / 依赖 / 忽略规则 / `catalog` 目录收录
-- `release` 发版（配合 `git tag vN`）
+Rules:
 
-四条规矩：
+1. **One commit, one thing.** Do not bundle a README rewrite, new templates and an About change into a single subject.
+2. **Short enough to never be truncated.** Put details in the commit body or `CHANGELOG.md`.
+3. **English subject, lowercase type, no bare `Update file` / `Create file` subjects.**
+4. Releases use `release: v1.1.1 — <one-line selling point>` and list verification in the body.
 
-1. **一条只说一件事**。不要把「重写 README + 加模板 + 改 About + 改 Release」塞进一条。
-2. **短到不会被截断**。要展开的写进 commit body 或 CHANGELOG，不堆在标题里。
-3. **前缀固定英文小写，正文用中文**；不写 `Update publish.yml`、`Create xxx` 这类不带前缀的裸说明。
-4. 发版用 `release: v1.1.1 — 一句话卖点`，body 里写验证结果。
-
-示例：
+Examples:
 
 ```sh
-docs: 中英 README 首屏改为价值前置
-docs: 新增 CONTRIBUTING 与 Issue 模板
-release: v1.1.1 — 改用 trusted publishing 发布
-fix: 窄屏切换时保留未发送输入
+docs: rewrite bilingual READMEs and add contributing guide
+docs: add commit message convention
+release: v1.1.1 — switch to npm trusted publishing
+fix: keep unsent input when collapsing to a narrow window
 ```
