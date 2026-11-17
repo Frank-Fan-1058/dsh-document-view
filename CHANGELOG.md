@@ -2,6 +2,9 @@
 
 ## 未发版（2026-11-17）
 
+- 支持本地 HTML：`.html` / `.htm` 文件在文档视图中居中显示（此前退回右侧栏）。
+- `isDocument()` 增加后缀识别；布局判定增加 `iframe[data-html-preview]` DOM 兜底；iframe 加入 structuralSelector。
+- `scripts/verify.mjs` 增加两条 HTML 断言；`client.js` 已重建。
 - 声明宿主要求 `dsh.engines.dsh = ">=0.2.2-rc.3"`，插件市场不再显示「未声明宿主要求」。
 - README 中英双语的「要求与兼容性」同步改为已声明口径。
 

@@ -2,7 +2,13 @@ const STORAGE_KEY = 'dsh.document-view.v1';
 const clampRatio = value => Number.isFinite(value) ? Math.max(0.2, Math.min(0.65, value)) : 0.35;
 
 export function isDocument(address) {
-  return typeof address === 'string' && address.startsWith('dsh-resource://file/');
+  if (typeof address !== 'string' || !address) return false;
+  if (address.startsWith('dsh-resource://file/')) return true;
+  // HTML previews may open under a viewer address that is not a session file
+  // address (absolute path, http URL, blob URL, ...). Recognize them by the
+  // .html/.htm extension anywhere in the address so the split layout applies.
+  const clean = address.split(/[?#]/, 1)[0];
+  return /\.(?:html|htm)$/i.test(clean) || /\.(?:html|htm)[\\/]/i.test(clean);
 }
 
 export function solveColumns(width, sidebar, ratio) {

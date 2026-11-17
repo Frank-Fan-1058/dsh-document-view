@@ -102,7 +102,7 @@ dsh1024 plugin --profile web add dsh-document-view
 
 ### 4. 只用原生能力
 
-Markdown、PDF、Word、Excel、PPT 的渲染、编辑、保存与预览，全部继续由 DSH 自带的查看器和 Office 引擎负责。本插件**不读取、不写入、不上传**你的文件，也不重复实现任何编辑功能。停用插件即恢复默认布局。
+Markdown、PDF、Word、Excel、PPT 与**本地 HTML 文件**的渲染、编辑、保存与预览，全部继续由 DSH 自带的查看器和 Office 引擎负责。本插件**不读取、不写入、不上传**你的文件，也不重复实现任何编辑功能。停用插件即恢复默认布局。
 
 ## 隐私与安全
 
@@ -180,7 +180,7 @@ node scripts/verify.mjs
 
 **升级 DSH 后失效了怎么办？** 插件会安全地自动停用（页面照常可用）。请提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 并附上 DSH 版本，维护者按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 适配。
 
-**支持哪些文件类型？** 宿主原生支持什么就支持什么：Markdown、PDF、Word、Excel、PPT 等，本插件不做格式限制。
+**支持哪些文件类型？** 宿主原生支持什么就支持什么：Markdown、PDF、Word、Excel、PPT、本地 HTML 等，本插件不做格式限制。
 
 ## 路线图
 

@@ -10,7 +10,7 @@
 | Node.js | >= 20（仅构建时） | `engines.node` |
 | 宿主要求 | `>=0.2.2-rc.3` | `dsh.engines.dsh` |
 
-本插件就是在上述版本上开发并实际运行的，因此**与当前最新官方版本兼容**。DSH 内置插件清单里 `ui-sidebar-right`、`ui-sidebar-documentpreview`、`office-kit`、`ui-conversation` 等条目均存在，与本插件依赖的宿主能力一致。
+本插件就是在上述版本上开发并实际运行的，因此**与当前最新官方版本兼容**。DSH 内置插件清单里 `ui-sidebar-right`、`ui-sidebar-documentpreview`、`office-kit`、`ui-conversation` 等条目均存在，与本插件依赖的宿主能力一致。HTML 预览依赖宿主 `iframe[data-html-preview]` 标记（当前版本存在）；布局通过地址后缀与 DOM 双重判定，任一命中即生效。
 
 > 无法承诺「未来所有 DSH 版本都兼容」——插件依赖宿主内部 DOM 与 slot 名称，这些不属于公开稳定 API。下面说明失效时的行为与复核方法。
 

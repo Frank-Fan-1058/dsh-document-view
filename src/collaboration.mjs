@@ -48,6 +48,8 @@ export function installDocumentCollaboration(ctx, require) {
         [data-fdc-active] > [data-fdc-center] { grid-column:3; grid-row:1; min-width:0; border-radius:0 !important; }
         [data-fdc-active] > [data-rightbar-col] { grid-column:2; grid-row:1; position:relative; min-width:0; overflow:hidden; }
         [data-fdc-active] [data-sidebar-right-panel] { left:0 !important; right:auto !important; top:0 !important; bottom:0 !important; width:100% !important; max-width:none !important; --dsh-sidebar-width:100% !important; }
+        [data-fdc-active] iframe[data-html-preview] { width:100% !important; height:100% !important; border:0 !important; display:block !important; }
+        [data-fdc-active] [data-rightbar-col] :has(> iframe[data-html-preview]) { width:100%; height:100%; }
         [data-fdc-active] > [data-side="rightbar"] { display:none !important; }
         [data-fdc-active] [data-fdc-center] { --dsh-composer-side-clearance:12px; --dsh-composer-card-max-width:100%; border-left:1px solid var(--dsw-alias-border-l3,#ddd); }
         [data-fdc-divider] { position:absolute; top:var(--dsh-windows-titlebar-height,0px); bottom:0; width:8px; margin-left:-4px; z-index:30; cursor:col-resize; touch-action:none; }
@@ -397,7 +399,8 @@ export function installDocumentCollaboration(ctx, require) {
         const address = tab?.contentId || '';
         const state = model.session(id);
         const inventory = sidebar.openTabs.getSnapshot();
-        const docs = inventory.filter(entry => entry.sessionId === id && isDocument(entry.contentId)).length;
+        const htmlPreview = !!document.querySelector('[data-rightbar-col] iframe[data-html-preview],[data-sidebar-right-panel] iframe[data-html-preview]');
+        const docs = inventory.filter(entry => entry.sessionId === id && isDocument(entry.contentId)).length + (htmlPreview ? 1 : 0);
         model.observeCount(id, docs);
         consumeIntent(id, address);
         const expanded = sidebar.isExpanded();
@@ -417,7 +420,7 @@ export function installDocumentCollaboration(ctx, require) {
         // On wide windows, a native fullscreen request is respected. On narrow
         // windows, native auto-fullscreen is adapted to the document/chat switch.
         const fullscreen = panel?.getAttribute('data-sidebar-right-panel') === 'fullscreen' && !geometry.narrow;
-        const visible = shellReady && state.enabled && expanded && !fullscreen && (isDocument(address) || tab?.kind === 'files');
+        const visible = shellReady && state.enabled && expanded && !fullscreen && (isDocument(address) || htmlPreview || tab?.kind === 'files');
         if (visible) {
           frame.setAttribute('data-fdc-active','');
           const columns = geometry.narrow ? `${left}px minmax(0,1fr) 0px` : `${left}px minmax(0,1fr) ${geometry.chat}px`;
@@ -481,7 +484,7 @@ export function installDocumentCollaboration(ctx, require) {
         if (columns !== nativeColumns) { nativeColumns = columns; schedule(); }
       });
       let nativeColumns = '';
-      const structuralSelector = '[data-rightbar-col],[data-sidebar-right-panel],[data-excel-preview],[data-slot="conversation.session.header.actions"],.fortune-zoom-container';
+      const structuralSelector = '[data-rightbar-col],[data-sidebar-right-panel],[data-excel-preview],iframe[data-html-preview],[data-slot="conversation.session.header.actions"],.fortune-zoom-container';
       const observer = new MutationObserver(records => {
         if (records.some(record => {
           if (record.type === 'attributes') {

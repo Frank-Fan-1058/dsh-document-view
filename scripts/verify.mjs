@@ -14,6 +14,8 @@ const check = (name, cond) => {
 console.log('== model ==');
 check('isDocument accepts dsh-resource://file/', isDocument('dsh-resource://file/a.md'));
 check('isDocument rejects other addresses', !isDocument('https://example.com/a.md'));
+check('isDocument accepts html addresses', isDocument('file:///D:/tmp/page.html'));
+check('isDocument accepts html viewer titles', isDocument('index.html'));
 check('solveColumns narrow below 760px', solveColumns(700, 0, 0.35).narrow === true);
 check('solveColumns wide splits document/chat', (() => {
   const r = solveColumns(1200, 0, 0.35);

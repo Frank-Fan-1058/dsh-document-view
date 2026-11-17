@@ -102,7 +102,7 @@ When the window is too narrow it switches to a single-column **Document / Chat**
 
 ### 4. Native all the way down
 
-Rendering, editing, saving and preview of Markdown, PDF, Word, Excel and PowerPoint remain entirely with DSH own viewers and Office engine. The plugin **never reads, writes or uploads your files** and reimplements no editing feature. Disable it and the default layout returns.
+Rendering, editing, saving and preview of Markdown, PDF, Word, Excel, PowerPoint and local HTML files remain entirely with DSH own viewers and Office engine. The plugin **never reads, writes or uploads your files** and reimplements no editing feature. Disable it and the default layout returns.
 
 ## Privacy & security
 
@@ -180,7 +180,7 @@ node scripts/verify.mjs
 
 **What if a DSH upgrade breaks it?** It disables itself safely and the page stays usable. Open an [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) with your DSH version.
 
-**Which file types are supported?** Whatever the host supports natively — Markdown, PDF, Word, Excel, PowerPoint, etc. The plugin adds no format restrictions.
+**Which file types are supported?** Whatever the host supports natively — Markdown, PDF, Word, Excel, PowerPoint, local HTML, etc. The plugin adds no format restrictions.
 
 ## Roadmap
 
