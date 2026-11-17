@@ -120,7 +120,7 @@ Markdown、PDF、Word、Excel、PPT 的渲染、编辑、保存与预览，全�
 
 - [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 桌面版 / Web 版，已在 **v0.2.2-rc.3** 上验证通过。
 - Node.js >= 20 —— **仅从源码重建时需要**；单纯安装使用不需要 Node.js。
-- 不设 `engines.dsh` 硬约束：版本约束写错会直接阻止安装，兼容性声明放在本文档与 [兼容性说明](docs/COMPATIBILITY.md)。
+- **已声明宿主要求**：`dsh.engines.dsh = ">=0.2.2-rc.3"`——低于该版本 DSH 会拒绝安装并提示 `incompatible-version`，避免装上去白屏。更细的兼容边界见 [兼容性说明](docs/COMPATIBILITY.md)。
 
 > 插件依赖宿主的 DOM 结构与 slot 名称。DSH 升级后若这些内部结构变化，插件会**自动停用并保持页面可用**（不会白屏），随后按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 重验即可。
 

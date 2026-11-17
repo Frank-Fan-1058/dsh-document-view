@@ -8,6 +8,7 @@
 | 官方最新 release | `dsh-v0.2.2-rc.3` | [deepseek-ai/DeepSeek-Harness releases](https://github.com/deepseek-ai/DeepSeek-Harness/releases/tag/dsh-v0.2.2-rc.3) |
 | 插件版本 | `1.1.1` | `package.json` |
 | Node.js | >= 20（仅构建时） | `engines.node` |
+| 宿主要求 | `>=0.2.2-rc.3` | `dsh.engines.dsh` |
 
 本插件就是在上述版本上开发并实际运行的，因此**与当前最新官方版本兼容**。DSH 内置插件清单里 `ui-sidebar-right`、`ui-sidebar-documentpreview`、`office-kit`、`ui-conversation` 等条目均存在，与本插件依赖的宿主能力一致。
 

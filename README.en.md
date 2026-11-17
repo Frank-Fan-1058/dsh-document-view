@@ -120,7 +120,7 @@ See [SECURITY.md](SECURITY.md) and [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md
 
 - [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) Desktop / Web, verified on **v0.2.2-rc.3**.
 - Node.js >= 20 — **only for rebuilding from source**; not needed to install or use.
-- No `engines.dsh` hard constraint: a wrong constraint blocks installation outright, so compatibility is documented instead.
+- **Host requirement declared**: `dsh.engines.dsh = ">=0.2.2-rc.3"`. On older DSH versions the host refuses the install with `incompatible-version` instead of loading a plugin that would blank the page. Granular boundaries are in the [compatibility notes](docs/COMPATIBILITY.md).
 
 > The plugin relies on the host DOM structure and slot names. If a DSH upgrade changes them, the plugin **disables itself safely and the page keeps working** (no white screen). Re-verify with the [upgrade checklist](docs/COMPATIBILITY.md).
 
