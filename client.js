@@ -131,7 +131,7 @@ function installDocumentCollaboration(ctx, require) {
         [data-fdc-active] > [data-fdc-center] { grid-column:3; grid-row:1; min-width:0; border-radius:0 !important; }
         [data-fdc-active] > [data-rightbar-col] { grid-column:2; grid-row:1; position:relative; min-width:0; overflow:hidden; }
         [data-fdc-active] [data-sidebar-right-panel] { left:0 !important; right:auto !important; top:0 !important; bottom:0 !important; width:var(--fdc-doc-w,100%) !important; max-width:var(--fdc-doc-w,100%) !important; --dsh-sidebar-width:var(--fdc-doc-w,100%) !important; }
-        [data-fdc-active] iframe[data-html-preview] { width:100% !important; height:100% !important; border:0 !important; display:block !important; background:var(--dsw-alias-bg-base,#fff); }
+        [data-fdc-active] iframe[data-html-preview] { width:var(--fdc-frame-w,100%) !important; height:var(--fdc-frame-h,100%) !important; border:0 !important; display:block !important; background:var(--dsw-alias-bg-base,#fff); }
          [data-fdc-active] iframe[data-fdc-html] { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; border:0 !important; display:block !important; z-index:5 !important; background:var(--dsw-alias-bg-base,#fff); }
         [data-fdc-active] [data-rightbar-col] :has(> iframe[data-html-preview]) { width:100%; height:100%; }
         [data-fdc-active] > [data-side="rightbar"] { display:none !important; }
@@ -529,7 +529,18 @@ function installDocumentCollaboration(ctx, require) {
         // windows, native auto-fullscreen is adapted to the document/chat switch.
         const fullscreen = panel?.getAttribute('data-sidebar-right-panel') === 'fullscreen' && !geometry.narrow;
         const visible = shellReady && state.enabled && expanded && !fullscreen && (isDocument(address) || htmlPreview || tab?.kind === 'files');
-        if (htmlPreview) unlockHtmlPreview();
+        if (htmlPreview) {
+          unlockHtmlPreview();
+          // The preview iframe's viewport is what the page measures itself
+          // against. Host layouts can leave it wider than the column the user
+          // actually sees, so a page that centres itself inside that frame
+          // looks shifted and clipped. Pin the frame to the visible column.
+          const box = right ? right.getBoundingClientRect() : null;
+          if (box && box.width > 0 && box.height > 0) {
+            right.style.setProperty('--fdc-frame-w', Math.round(box.width) + 'px');
+            right.style.setProperty('--fdc-frame-h', Math.round(box.height) + 'px');
+          }
+        }
         // Pin the right column's real width: the preview iframe must not be wider
         // than the visible center column, or a page that sizes itself from
         // window.innerWidth (deck fit()) scales for the wrong width and clips.
