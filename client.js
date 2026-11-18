@@ -134,6 +134,7 @@ function installDocumentCollaboration(ctx, require) {
         [data-fdc-active] iframe[data-html-preview] { width:100% !important; height:100% !important; border:0 !important; display:block !important; background:var(--dsw-alias-bg-base,#fff); }
          [data-fdc-active] iframe[data-fdc-html] { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; border:0 !important; display:block !important; z-index:5 !important; background:var(--dsw-alias-bg-base,#fff); }
         [data-fdc-active] [data-rightbar-col] :has(> iframe[data-html-preview]) { width:100%; height:100%; }
+        [data-fdc-active] iframe[data-sidebar-browser-frame] { width:100% !important; height:100% !important; border:0 !important; display:block !important; }
         [data-fdc-active] > [data-side="rightbar"] { display:none !important; }
         [data-fdc-active] [data-fdc-center] { --dsh-composer-side-clearance:12px; --dsh-composer-card-max-width:100%; border-left:1px solid var(--dsw-alias-border-l3,#ddd); }
         [data-fdc-divider] { position:absolute; top:var(--dsh-windows-titlebar-height,0px); bottom:0; width:8px; margin-left:-4px; z-index:30; cursor:col-resize; touch-action:none; }
@@ -266,7 +267,7 @@ function installDocumentCollaboration(ctx, require) {
         }
         if (model.session(id).enabled && !sidebar.isExpanded()) {
           try {
-            if (isDocument(tab?.contentId) || tab?.kind === 'files') sidebar.toggleExpanded();
+            if (isDocument(tab?.contentId) || tab?.kind === 'files' || tab?.kind === 'browser') sidebar.toggleExpanded();
             else sidebar.openTab('files');
           } catch { /* The arriving session may not have adopted its sidebar yet. */ }
         }
@@ -528,7 +529,7 @@ function installDocumentCollaboration(ctx, require) {
         // On wide windows, a native fullscreen request is respected. On narrow
         // windows, native auto-fullscreen is adapted to the document/chat switch.
         const fullscreen = panel?.getAttribute('data-sidebar-right-panel') === 'fullscreen' && !geometry.narrow;
-        const visible = shellReady && state.enabled && expanded && !fullscreen && (isDocument(address) || htmlPreview || tab?.kind === 'files');
+        const visible = shellReady && state.enabled && expanded && !fullscreen && (isDocument(address) || htmlPreview || tab?.kind === 'files' || tab?.kind === 'browser');
         // The preview panel fills the visible column through CSS (absolute inset
         // 0), so the iframe's viewport equals what the user sees and a page that
         // sizes itself from it lands centred instead of clipped.
