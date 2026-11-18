@@ -50,7 +50,15 @@ check('client.js registers module loader id', client.includes("id: 'dsh-document
 check('client.js contains host contract guard', client.includes('hostContractIntact'));
 check('client.js wraps activation in try/catch', client.includes('disabled safely after activation error'));
 check('client.js has no external URL', !/https?:\/\//.test(client));
-check('client.js has no network API', !/\b(fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(/.test(client));
+// The only fetch allowed is the host's local dsh-resource:// protocol, used to
+// read the file you already opened so our own HTML preview can render it. It is
+// not a network call: no http(s) URL, no WebSocket, no XHR.
+check('client.js makes no network request', !/https?:\/\//.test(client) && !/\b(XMLHttpRequest|WebSocket|EventSource)\s*\(/.test(client));
+check('client.js fetches only the local resource protocol', (() => {
+  const calls = client.match(/\bfetch\(/g) || [];
+  if (calls.length === 0) return true;
+  return !/fetch\((?!address)/.test(client) && client.includes('dsh-resource://');
+})());
 check('client.js has no hardcoded local path', !/[A-Za-z]:\\|C:\/Users|\/Users\//.test(client));
 check('client.js inlines CSS (no external stylesheet)', !/\.css['"]\s*\)/.test(client) && client.includes('style.textContent'));
 

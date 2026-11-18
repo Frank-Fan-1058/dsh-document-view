@@ -108,7 +108,7 @@ Rendering, editing, saving and preview of Markdown, PDF, Word, Excel, PowerPoint
 
 The plugin touches your workspace UI, so every claim below is verifiable from the source:
 
-- **No network calls** — no `fetch`, `XMLHttpRequest`, `WebSocket`, no external URLs in the code.
+- **No network calls** — no `http(s)://` address, `XMLHttpRequest` or `WebSocket`. The single `fetch` reads the HTML file you just opened, through the host's own local `dsh-resource://` protocol.
 - **No file access** — no filesystem or editor read/write APIs.
 - **No credentials** — no API keys, tokens, passwords, cookies, `.env` or config files ship in the package.
 - **One preference only** — browser `localStorage` holds the auto-enter toggle and per-session ratios under `dsh.document-view.v1`; no document content, paths, file names or chat content.

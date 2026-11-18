@@ -108,7 +108,7 @@ Markdown、PDF、Word、Excel、PPT 与**本地 HTML 文件**的渲染、编辑�
 
 插件会接触你的工作界面，所以这一点值得单独说清楚 —— 以下每条都能从源码核对：
 
-- **零网络请求**：代码里没有 `fetch`、`XMLHttpRequest`、`WebSocket`，也没有任何外部 URL。
+- **零网络请求**：没有任何 `http(s)://` 地址、`XMLHttpRequest`、`WebSocket`。唯一的 `fetch` 是读你刚打开的那个 HTML 文件（走宿主自己的 `dsh-resource://` 本地协议），用于自建 HTML 预览。
 - **零文件访问**：不调用任何读写文件的接口，不碰编辑器内容。
 - **零凭据**：包内不含 API Key、Token、密码、Cookie 或任何密钥；没有 `.env`、没有配置文件。
 - **只存一项偏好**：用浏览器 `localStorage` 保存「自动进入开关 + 每个会话的分栏比例」，键名 `dsh.document-view.v1`，不保存文档内容、路径、文件名或对话内容。

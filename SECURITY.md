@@ -4,8 +4,8 @@
 
 | Concern | Status |
 | --- | --- |
-| Network requests | None — no `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource`, or external URLs |
-| File I/O | None — no filesystem or editor read/write APIs |
+| Network requests | None — no `https?://` URL, `XMLHttpRequest`, `WebSocket` or `EventSource`. The only `fetch` reads the file you already opened through the host's local `dsh-resource://` protocol, to render our own HTML preview |
+| File I/O | Read-only, and only the open document: the HTML preview re-reads that one file through the host's own protocol. No filesystem API, no writes |
 | Credentials | None — no API keys, tokens, passwords, cookies, `.env`, or config files in the package |
 | Data stored | One `localStorage` entry `dsh.document-view.v1`: the auto-enter flag and per-session column ratios |
 | Data not stored | Document content, file paths, file names, chat content, account data |
