@@ -48,7 +48,8 @@ export function installDocumentCollaboration(ctx, require) {
         [data-fdc-active] > [data-fdc-center] { grid-column:3; grid-row:1; min-width:0; border-radius:0 !important; }
         [data-fdc-active] > [data-rightbar-col] { grid-column:2; grid-row:1; position:relative; min-width:0; overflow:hidden; }
         [data-fdc-active] [data-sidebar-right-panel] { left:0 !important; right:auto !important; top:0 !important; bottom:0 !important; width:var(--fdc-doc-w,100%) !important; max-width:var(--fdc-doc-w,100%) !important; --dsh-sidebar-width:var(--fdc-doc-w,100%) !important; }
-        [data-fdc-active] iframe[data-html-preview], [data-fdc-active] iframe[data-fdc-html] { width:100% !important; height:100% !important; border:0 !important; display:block !important; background:var(--dsw-alias-bg-base,#fff); }
+        [data-fdc-active] iframe[data-html-preview] { width:100% !important; height:100% !important; border:0 !important; display:block !important; background:var(--dsw-alias-bg-base,#fff); }
+         [data-fdc-active] iframe[data-fdc-html] { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; border:0 !important; display:block !important; z-index:5 !important; background:var(--dsw-alias-bg-base,#fff); }
         [data-fdc-active] [data-rightbar-col] :has(> iframe[data-html-preview]) { width:100%; height:100%; }
         [data-fdc-active] > [data-side="rightbar"] { display:none !important; }
         [data-fdc-active] [data-fdc-center] { --dsh-composer-side-clearance:12px; --dsh-composer-card-max-width:100%; border-left:1px solid var(--dsw-alias-border-l3,#ddd); }
@@ -114,45 +115,26 @@ export function installDocumentCollaboration(ctx, require) {
       // The host's built-in HTML preview is a DOMPurify-sanitized document with
       // CSP `script-src 'none'` and an empty sandbox, so any single-file page
       // that lays itself out with inline JS (a deck calling fit()) never runs
-      // and stays clipped at its intrinsic size. Render the ORIGINAL bytes in an
-      // iframe of our own instead: sandbox="allow-scripts" only, so scripts run
-      // while the frame keeps an opaque origin (no parent DOM, no cookies, no
-      // storage). If the fetch fails we simply keep the host preview.
-      const previewBlobs = new Map();
-      function unlockHtmlPreview(address) {
-        const host = document.querySelector('[data-rightbar-col] iframe[data-html-preview]:not([data-fdc-html])');
+      // The host renders HTML previews inside an empty sandbox with CSP
+      // `script-src 'none'`, so every inline script is dead and a page that sizes
+      // itself with JS stays at its intrinsic width and gets clipped. The host
+      // ships its own escape hatch — an "临时解锁（不安全）" control that switches the
+      // preview to the scripted blob renderer. Drive that instead of re-rendering
+      // the sanitized markup ourselves: the page keeps its own paging and fit().
+      const unlockTried = new WeakSet();
+      function unlockHtmlPreview() {
+        const host = document.querySelector('iframe[data-html-preview]:not([data-fdc-html])');
         if (!host || host.getAttribute('sandbox') !== '') return;
-        const parent = host.parentElement;
-        if (!parent || typeof address !== 'string' || !address.startsWith('dsh-resource://')) return;
-        let mine = parent.querySelector('iframe[data-fdc-html]');
-        if (!mine) {
-          mine = document.createElement('iframe');
-          mine.setAttribute('data-fdc-html', '');
-          mine.setAttribute('data-html-preview', '');
-          mine.setAttribute('sandbox', 'allow-scripts');
-          mine.setAttribute('title', host.getAttribute('title') || 'HTML 预览');
-          if (host.className) mine.className = host.className;
-          parent.appendChild(mine);
+        if (unlockTried.has(host)) return;
+        unlockTried.add(host);
+        const panel = document.querySelector('[data-rightbar-col]') || host.parentElement;
+        if (!panel) return;
+        const scope = panel || document;
+        const clickable = scope.querySelectorAll('button,[role="button"]');
+        for (const node of clickable) {
+          const label = ((node.textContent || '') + ' ' + (node.getAttribute('aria-label') || '')).trim();
+          if (label.includes('临时解锁') || /unlock/i.test(label)) { node.click(); return; }
         }
-        if (mine.dataset.address === address) { host.style.display = 'none'; return; }
-        mine.dataset.address = address;
-        host.style.display = 'none';
-        fetch(address, { cache: 'no-store' }).then(response => {
-          if (!response.ok) throw new Error('preview fetch ' + response.status);
-          return response.blob();
-        }).then(blob => {
-          if (mine.dataset.address !== address) return;
-          const previous = previewBlobs.get(mine);
-          const url = URL.createObjectURL(blob.type ? blob : new Blob([blob], { type: 'text/html' }));
-          previewBlobs.set(mine, url);
-          mine.src = url;
-          if (previous) URL.revokeObjectURL(previous);
-        }).catch(() => {
-          // fetch may be refused for a custom scheme; navigating the frame to the
-          // same local address still bypasses the sanitized copy. If that fails
-          // too the user simply keeps the host preview.
-          if (mine.dataset.address === address && mine.src !== address) mine.src = address;
-        });
       }
       function consumeIntent(id, address) {
         if (!pendingIntent) return;
@@ -464,7 +446,7 @@ export function installDocumentCollaboration(ctx, require) {
         // windows, native auto-fullscreen is adapted to the document/chat switch.
         const fullscreen = panel?.getAttribute('data-sidebar-right-panel') === 'fullscreen' && !geometry.narrow;
         const visible = shellReady && state.enabled && expanded && !fullscreen && (isDocument(address) || htmlPreview || tab?.kind === 'files');
-        if (htmlPreview) unlockHtmlPreview(address);
+        if (htmlPreview) unlockHtmlPreview();
         // Pin the right column's real width: the preview iframe must not be wider
         // than the visible center column, or a page that sizes itself from
         // window.innerWidth (deck fit()) scales for the wrong width and clips.
