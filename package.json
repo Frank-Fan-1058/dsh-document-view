@@ -1,7 +1,7 @@
 {
   "name": "dsh-document-view",
-  "version": "1.2.3",
-  "description": "Split document view for DeepSeek Harness: read a document in the center while the conversation stays on the right, mark up the page, and hand the review to the AI.",
+  "version": "1.2.4",
+  "description": "Split document view for DeepSeek Harness: the document stays centered while the chat stays on the right. Strike out or comment on Word / PDF / PPT pages, send the review to the AI, and see each edit highlighted.",
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -43,7 +43,13 @@
     "layout",
     "ui",
     "office",
-    "productivity"
+    "productivity",
+    "annotation",
+    "annotations",
+    "review",
+    "pdf",
+    "docx",
+    "split-screen"
   ],
   "repository": {
     "type": "git",
