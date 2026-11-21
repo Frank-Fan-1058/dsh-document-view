@@ -9,6 +9,7 @@
 
 ## 当前状态
 
+- 2026-11-21 收尾：**1.2.0 / 1.2.1 / 1.2.2 均已上 npm**（npm 侧上传后约 1–5 分钟才在 registry 可见，属正常处理延迟，不是待批准）。1.2.1 默认英文 README + 截图只对文字打码；1.2.2 把 DSH 验证口径更新到 0.2.2-rc.5（engines 下限仍 >=0.2.2-rc.3）。
 - 2026-11-21 深夜：**v1.2.1** 已发布（默认英文 README、截图改为只对文字打码）。npm 1.2.0 已上线；1.2.1 由 Actions 上传后经 npm 处理（约数分钟）后可见，`npm stage list` 观察无待批准项。
 - 2026-11-21 晚：发布 **v1.2.0**（tag 已推、Release 已建）。npm 1.2.0 由 Actions 上传成功但被 npm 暂存（staged，需在 npm 站点批准后才对外可见；重复发布会报 `E409 Cannot publish over previously staged version`）。awesome-dsh-plugin 目录描述刷新 PR [#17499](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/17499) 待审；README/插件详情页换成打了码的真实界面截图。
 - 2026-11-21（夜间）：批注高亮加强（红/黄底）；已提交批注在文件被改后按前后文锚点标出改动接缝（绿），角标 ✓；锚点定位抽成纯函数并补测试（共 72 条）。刷新页面生效。
