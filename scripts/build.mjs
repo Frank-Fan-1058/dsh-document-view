@@ -8,6 +8,7 @@ const name = 'dsh-document-view';
 
 const strip = p => readFileSync(root + p, 'utf8').replace(/^export /gm, '');
 const model = strip('src/model.mjs');
+const annotations = strip('src/annotations.mjs');
 const browser = strip('src/collaboration.mjs');
 
 const client = `// Independent document collaboration client; no UI patch bundle included.
@@ -15,6 +16,7 @@ window.__ModuleLoader__.load({
   id: '${name}',
   factory: (require) => {
 ${model}
+${annotations}
 ${browser}
     // Fail-safe activation: a future DSH release may change the module
     // loader or host contract. Never let an unexpected error inside this

@@ -26,6 +26,7 @@ export class CollaborationState {
     this.auto = false;
     this.sessions = Object.create(null);
     this.counts = new Map();
+    this.dirty = new Set();
     try {
       const saved = JSON.parse(storage?.getItem(STORAGE_KEY) || '{}');
       this.auto = saved.auto === true;
@@ -42,14 +43,61 @@ export class CollaborationState {
   session(id) {
     return this.sessions[id] ||= { enabled: false, ratio: 0.35, suppressed: '' };
   }
+  // Merge with what other windows already saved: only the flags this window
+  // changed override the stored value, so two windows on different sessions
+  // no longer erase each other.
   save() {
-    try { this.storage?.setItem(STORAGE_KEY, JSON.stringify({ auto: this.auto, sessions: this.sessions })); }
-    catch { /* Private browsing and quota errors keep in-memory behavior working. */ }
+    if (!this.storage) return false;
+    try {
+      let remote = {};
+      try { remote = JSON.parse(this.storage.getItem(STORAGE_KEY) || '{}'); } catch { /* treat as empty */ }
+      const sessions = { ...(remote.sessions || {}) };
+      let auto = remote.auto === true;
+      if (this.dirty.has('auto')) auto = this.auto;
+      for (const id of this.dirty) {
+        if (id === 'auto') continue;
+        sessions[id] = this.session(id);
+      }
+      for (const [id, value] of Object.entries(this.sessions)) {
+        if (!(id in sessions)) sessions[id] = value;
+      }
+      for (const [id, value] of Object.entries(remote.sessions || {})) {
+        if (this.dirty.has(id) || !value || typeof value !== 'object') continue;
+        this.sessions[id] = {
+          enabled: value.enabled === true,
+          ratio: clampRatio(value.ratio),
+          suppressed: typeof value.suppressed === 'string' ? value.suppressed : '',
+        };
+      }
+      this.storage.setItem(STORAGE_KEY, JSON.stringify({ auto, sessions }));
+      this.dirty.clear();
+      return true;
+    } catch { return false; }
+  }
+  // Adopt another window's write without dropping this window's pending edits.
+  reload() {
+    try {
+      const remote = JSON.parse(this.storage?.getItem(STORAGE_KEY) || '{}');
+      if (!this.dirty.has('auto')) this.auto = remote.auto === true;
+      const sessions = {};
+      for (const [id, value] of Object.entries(remote.sessions || {})) {
+        if (!value || typeof value !== 'object') continue;
+        sessions[id] = {
+          enabled: value.enabled === true,
+          ratio: clampRatio(value.ratio),
+          suppressed: typeof value.suppressed === 'string' ? value.suppressed : '',
+        };
+      }
+      for (const id of this.dirty) if (id !== 'auto') sessions[id] = this.session(id);
+      for (const [id, value] of Object.entries(this.sessions)) if (!(id in sessions)) sessions[id] = value;
+      this.sessions = sessions;
+    } catch { /* keep the current in-memory state */ }
   }
   toggle(id, address) {
     const session = this.session(id);
     session.enabled = !session.enabled;
     session.suppressed = session.enabled ? '' : address || '';
+    this.dirty.add(id);
     this.save();
   }
   observe(id, address, userGesture) {
@@ -57,6 +105,7 @@ export class CollaborationState {
     if (this.auto && userGesture && isDocument(address) && session.suppressed !== address && !session.enabled) {
       session.enabled = true;
       session.suppressed = '';
+      this.dirty.add(id);
       this.save();
     }
   }
@@ -65,14 +114,17 @@ export class CollaborationState {
     this.counts.set(id, count);
     if (previous > 0 && count === 0) {
       this.session(id).enabled = false;
+      this.dirty.add(id);
       this.save();
     }
   }
-  setAuto(value) { this.auto = value === true; this.save(); }
+  setAuto(value) { this.auto = value === true; this.dirty.add('auto'); this.save(); }
   setRatio(id, value, persist = true) {
     const session = this.session(id), ratio = clampRatio(value);
     if (session.ratio === ratio) return;
     session.ratio = ratio;
+    // Dragging commits on pointer-up, so the id must stay dirty until then.
+    this.dirty.add(id);
     if (persist) this.save();
   }
 }

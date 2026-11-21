@@ -3,7 +3,7 @@
 
   <h1>dsh-document-view</h1>
 
-  <p><strong>Read the document. Keep the conversation.</strong><br />A split document view for DeepSeek Harness: the file stays in the center, your AI chat stays on the right — no tab hopping, no copy-pasting the file into the prompt.</p>
+  <p><strong>Read the document. Keep the conversation. Mark it up.</strong><br />A split document view for DeepSeek Harness: the file stays in the center, your AI chat stays on the right; strike out or comment on the page, send the review to the AI, and see each edit highlighted.</p>
 
   <p>English · <a href="README.md">简体中文 →</a></p>
 </div>
@@ -18,9 +18,9 @@
 
 > ⭐ If this saves you a few round trips, star the repo — it helps other DeepSeek Harness users discover the plugin in marketplaces.
 
-![Document view: document in the center, conversation on the right](docs/screenshots/01-overview.png)
+![Document view: the document in the center with annotation marks, the conversation on the right](docs/screenshots/01-overview.png)
 
-> Screenshots are **desensitized illustrations** with generic placeholder content. They contain no real sessions, file names, accounts, or personal data.
+> Screenshots are **real captures**: the session sidebar and conversation are masked, and the document is a sample agreement with fictional parties and prices.
 
 <details>
 <summary>Table of contents</summary>
@@ -54,7 +54,7 @@ dsh plugin --profile web add dsh-document-view
 dsh1024 plugin --profile web add dsh-document-view
 ```
 
-Package: [npm / dsh-document-view](https://www.npmjs.com/package/dsh-document-view) (currently `1.1.1`). Enable it in the DSH plugin list and refresh the page. Other install options are in [Install](#install).
+Package: [npm / dsh-document-view](https://www.npmjs.com/package/dsh-document-view) (currently `1.2.0`). Enable it in the DSH plugin list and refresh the page. Other install options are in [Install](#install).
 
 ## The problem
 
@@ -80,13 +80,37 @@ Open a file in DSH and it takes over the right sidebar, pushing your conversatio
 
 ### 1. Document and chat, side by side
 
-![Split view with a resizable divider](docs/screenshots/01-overview.png)
+![Document view: the document in the center with three annotation marks, the conversation on the right](docs/screenshots/01-overview.png)
 
 Open any file, then click **Document view** in the conversation header actions or the file tab actions. Drag the divider to resize; `←` / `→` nudge it, `Home` resets the ratio, and double-clicking the divider restores the default. The toggle and ratio are **saved per session**.
 
-### 2. Settings and auto-enter
+### 2. Mark up the page, hand the review to the agent
 
-![Document view settings](docs/screenshots/02-settings.png)
+![Annotation panel: three marks listed by page, jump / edit / delete, with "Send to AI" at the bottom](docs/screenshots/02-annotations.png)
+
+Select text in the Word / PDF / PowerPoint page and a small toolbar appears:
+
+- **Strikethrough** marks a passage for deletion and draws the line on the page.
+- **Comment** records your change request; the page shows an amber highlight with a dashed underline and a numbered badge.
+
+The **Annotate N** button in the document toolbar opens the review list: jump to a mark, edit the comment, delete it. **Send to AI** turns the whole list into one structured message (file path, page, exact target text, surrounding context, request, working conventions) in the right-hand conversation. The agent edits the original file, and the native preview follows the disk change. Annotations are kept per file path in browser storage, so a refresh or restart keeps them.
+
+> Excel previews are an in-plugin canvas without a text layer, so they are outside this version.
+> Manual Word editing is not part of this release: the preview toolbar already has an "open in app" control that hands the file to Word / WPS; saving there refreshes the preview.
+
+### 3. See where the edit landed
+
+Once a review is sent, the quoted text no longer exists in the edited file. The plugin then re-anchors the mark with the text that surrounded it:
+
+- a replaced passage gets a green highlight, a green underline and a **✓** badge;
+- a deleted passage gets a 2px green caret in the seam between its neighbours;
+- a mark whose text did not change stays as it was (dimmed) and is never marked green.
+
+Each mark is resolved on its own; a mark without surrounding context is reported, not guessed.
+
+### 4. Settings and auto-enter
+
+![Document view settings: auto-enter toggle and the three layout presets](docs/screenshots/03-settings.png)
 
 The arrow next to the toggle opens settings:
 
@@ -94,13 +118,11 @@ The arrow next to the toggle opens settings:
 - **Document-first / Balanced / Chat-first** presets, saved per session.
 - **Auto update / Paused** — reuses the host native file watcher. Pause when you want to read carefully; resuming shows the latest content while preserving the native viewer page and zoom state.
 
-### 3. Works in narrow windows
-
-![Document / Chat switch in a narrow window](docs/screenshots/03-narrow.png)
+### 5. Works in narrow windows
 
 When the window is too narrow it switches to a single-column **Document / Chat** toggle. **Unsent input is preserved**, and focus moves to the visible switch if the current focus would be hidden.
 
-### 4. Native all the way down
+### 6. Native all the way down
 
 Rendering, editing, saving and preview of Markdown, PDF, Word, Excel, PowerPoint and local HTML files remain entirely with DSH own viewers and Office engine. The plugin **never reads, writes or uploads your files** and reimplements no editing feature. Disable it and the default layout returns.
 
@@ -109,9 +131,9 @@ Rendering, editing, saving and preview of Markdown, PDF, Word, Excel, PowerPoint
 The plugin touches your workspace UI, so every claim below is verifiable from the source:
 
 - **No network calls** — no `http(s)://` address, `XMLHttpRequest` or `WebSocket`. The single `fetch` reads the HTML file you just opened, through the host's own local `dsh-resource://` protocol.
-- **No file access** — no filesystem or editor read/write APIs.
+- **No file reads or writes** — no filesystem or editor read/write APIs. Annotations only read the selected text from the rendered page text layer; the original file is never opened.
 - **No credentials** — no API keys, tokens, passwords, cookies, `.env` or config files ship in the package.
-- **One preference only** — browser `localStorage` holds the auto-enter toggle and per-session ratios under `dsh.document-view.v1`; no document content, paths, file names or chat content.
+- **Two local stores only** — `dsh.document-view.v1` holds the auto-enter toggle and per-session ratios; `dsh.document-view.annotations.v2/` holds one key per annotation (file path, page, quoted text, request, status), so several windows can add marks without overwriting each other. Both stay in browser `localStorage`; nothing is uploaded or written back to a file.
 - **Narrow CSS scope** — all styles are scoped to the plugin own `[data-fdc-*]` attributes. No host components are moved, cloned or remounted; only the window grid geometry changes.
 
 See [SECURITY.md](SECURITY.md) and [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
@@ -184,7 +206,7 @@ node scripts/verify.mjs
 
 ## Roadmap
 
-Shipped: v1.0.0 first third-party installable release, v1.1.0 bilingual docs and safe-deactivation fallback, v1.1.1 npm trusted publishing.
+Shipped: v1.0.0 first third-party installable release, v1.1.0 bilingual docs and safe-deactivation fallback, v1.1.1 npm trusted publishing, v1.2.0 page annotations and edit highlighting.
 
 Already listed: npm package, 1024 Store / awesome catalog (PR #942 merged), and the GitHub `dsh-plugin` topic. Next (feedback-driven): follow up on the dsh-market catalog PR review; re-verify after new DSH releases; add more locales and layout presets. See [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
 

@@ -3,7 +3,7 @@
 
   <h1>dsh-document-view</h1>
 
-  <p><strong>边看文档，边聊 AI。</strong><br />文档居中显示，当前会话留在右侧 —— 不用再来回切换，也不用把文件反复贴进对话框。</p>
+  <p><strong>边看文档，边聊 AI，边划批注。</strong><br />文档居中显示，当前会话留在右侧；在页面上划线批注，一键交给 AI 逐条改，改完改动处标绿。</p>
 
   <p>简体中文 · <a href="README.en.md">English →</a></p>
 </div>
@@ -20,7 +20,7 @@
 
 ![文档视图：中间是文档，右侧是当前会话](docs/screenshots/01-overview.png)
 
-> 界面图为**脱敏示意图**，用通用占位内容绘制，不含真实会话、文件名、账号或个人数据。
+> 以上为**真实界面截图**：会话栏与对话内容已打码，文档为示例协议（主体与价格均为虚构）。
 
 <details>
 <summary>目录</summary>
@@ -54,7 +54,7 @@ dsh plugin --profile web add dsh-document-view
 dsh1024 plugin --profile web add dsh-document-view
 ```
 
-包地址：[npm / dsh-document-view](https://www.npmjs.com/package/dsh-document-view)（当前 `1.1.1`）。装完在 DSH 插件列表启用、刷新页面即可。其它装法见 [安装](#安装)。
+包地址：[npm / dsh-document-view](https://www.npmjs.com/package/dsh-document-view)（当前 `1.2.0`）。装完在 DSH 插件列表启用、刷新页面即可。其它装法见 [安装](#安装)。
 
 ## 为什么需要它
 
@@ -80,13 +80,37 @@ dsh1024 plugin --profile web add dsh-document-view
 
 ### 1. 文档与对话同屏
 
-![分栏与可调分隔线](docs/screenshots/01-overview.png)
+![文档视图：文档在中间并带三处批注标记，右侧是当前会话](docs/screenshots/01-overview.png)
 
-打开任意文件后，在会话头部或文件标签的操作区点 **「文档视图」** 即可开启。拖动分隔线调整宽度，也可以用 `←` / `→` 微调、`Home` 复位、双击分隔线恢复默认比例。开关和比例**按会话分别记住**。
+打开任意文件后，在会话头部或文件标签的操作区点 **「文档协作」** 即可开启。拖动分隔线调整宽度，也可以用 `←` / `→` 微调、`Home` 复位、双击分隔线恢复默认比例。开关和比例**按会话分别记住**。
 
-### 2. 设置与自动进入
+### 2. 划线批注，一键交给 AI
 
-![文档视图设置](docs/screenshots/02-settings.png)
+![批注面板：三处标记按页列出，可定位、编辑、删除，底部是「提交给 AI」](docs/screenshots/02-annotations.png)
+
+在 Word / PDF / PPT 的阅读页里选中文字，浮条上会出现两个动作：
+
+- **删除线**：标记这段应删掉，页面上直接画删除线。
+- **批注**：写一句修改意见，页面上以黄底虚线下划线加编号标出。
+
+文档工具栏的 **「批注 N」** 打开汇总面板：按页列出每条批注，可定位、改意见、删除。点 **「提交给 AI」**，插件把「文件路径 + 页码 + 目标原文 + 前后文 + 意见 + 处理约定」整理成一条结构化消息发进右侧对话，AI 按条改原文件，改完原生预览自动跟随磁盘更新。批注按文件路径保存在浏览器本地，刷新或重启后仍在。
+
+> Excel 预览是插件自绘表格，没有文字层，因此不在本版批注范围内。
+> Word 的人工编辑本轮未做：预览工具栏自带的「用应用打开」可把文件交给系统 Word / WPS，保存后预览会自动刷新。
+
+### 3. 改完的位置会标绿
+
+批注提交后，原引文在新文件里已经找不到（说明这段被改过），插件就用批注存下的前后文锚点重新定位：
+
+- 被替换的段落：绿色底 + 绿底边，角标变成 **✓**；
+- 整段被删：前文与后文的接缝处一条 2px 绿色竖线；
+- 文字没动的批注保持原样（变淡显示），不会误标。
+
+多处批注各自独立定位；找不到前后文的批注不猜、不标。
+
+### 4. 设置与自动进入
+
+![文档协作设置：自动进入开关与三种布局预设](docs/screenshots/03-settings.png)
 
 开关旁的箭头打开设置：
 
@@ -94,13 +118,11 @@ dsh1024 plugin --profile web add dsh-document-view
 - **文档优先 / 均衡 / 对话优先** 三种预设，按会话保存。
 - **自动更新 / 已暂停**：沿用宿主原生的文件变化监听，需要仔细阅读时可暂停跟随，继续后显示最新内容，并保留原生预览的页码与缩放状态。
 
-### 3. 窄窗口也能用
-
-![窄窗口下的文档 / 对话切换](docs/screenshots/03-narrow.png)
+### 5. 窄窗口也能用
 
 窗口不够宽时自动切换为「文档 / 对话」单栏切换，**未发送的输入不会丢**；宽转窄时若焦点落在即将隐藏的区域，会移到可见的切换按钮上。
 
-### 4. 只用原生能力
+### 6. 只用原生能力
 
 Markdown、PDF、Word、Excel、PPT 与**本地 HTML 文件**的渲染、编辑、保存与预览，全部继续由 DSH 自带的查看器和 Office 引擎负责。本插件**不读取、不写入、不上传**你的文件，也不重复实现任何编辑功能。停用插件即恢复默认布局。
 
@@ -109,9 +131,9 @@ Markdown、PDF、Word、Excel、PPT 与**本地 HTML 文件**的渲染、编辑�
 插件会接触你的工作界面，所以这一点值得单独说清楚 —— 以下每条都能从源码核对：
 
 - **零网络请求**：没有任何 `http(s)://` 地址、`XMLHttpRequest`、`WebSocket`。唯一的 `fetch` 是读你刚打开的那个 HTML 文件（走宿主自己的 `dsh-resource://` 本地协议），用于自建 HTML 预览。
-- **零文件访问**：不调用任何读写文件的接口，不碰编辑器内容。
+- **零文件读写**：不调用任何读写文件的接口，不碰编辑器内容。批注只读取页面文字层里的选中文字，不打开原文件。
 - **零凭据**：包内不含 API Key、Token、密码、Cookie 或任何密钥；没有 `.env`、没有配置文件。
-- **只存一项偏好**：用浏览器 `localStorage` 保存「自动进入开关 + 每个会话的分栏比例」，键名 `dsh.document-view.v1`，不保存文档内容、路径、文件名或对话内容。
+- **只存两类本地数据**：`dsh.document-view.v1` 保存「自动进入开关 + 每个会话的分栏比例」；`dsh.document-view.annotations.v2/` 下每条批注一个键（文件路径、页码、选中文字、意见与状态），多个窗口同时打开时互不覆盖；两者都只在浏览器 `localStorage`，不上传、不写回文件。
 - **作用域收窄**：所有样式限定在插件自己加的 `[data-fdc-*]` 属性下，不改宿主全局样式；不移动、不克隆、不重新挂载任何 React 组件，只调整窗口网格的几何尺寸。
 
 详见 [SECURITY.md](SECURITY.md) 与 [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md)。
@@ -184,13 +206,13 @@ node scripts/verify.mjs
 
 ## 路线图
 
-已发布：v1.0.0 首个第三方可安装版本、v1.1.0 双语文档与安全兜底、v1.1.1 npm trusted publishing。
+已发布：v1.0.0 首个第三方可安装版本、v1.1.0 双语文档与安全兜底、v1.1.1 npm trusted publishing、v1.2.0 文档批注与改动高亮。
 
 已收录：npm 包、1024 Store / awesome 目录（PR #942 已合并）、GitHub `dsh-plugin` topic。接下来（按反馈排期）：跟进 dsh-market 目录 PR 审核；DSH 新版本发布后按升级复核清单重验；视反馈补充更多语言与布局预设。完整清单见 [ROADMAP.md](ROADMAP.md)，版本记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 参与贡献
 
-欢迎提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 与 PR，流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。改 `src/` 后请一并提交重建后的 `client.js`；涉及界面文案时同步更新 `locale/en.json` 与 `locale/zh.json`。请勿在示意图或示例中放入真实会话、文件名、账号或个人数据。
+欢迎提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 与 PR，流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。改 `src/` 后请一并提交重建后的 `client.js`；涉及界面文案时同步更新 `locale/en.json` 与 `locale/zh.json`。提交界面截图前请先对会话、文件名、账号等打码。
 
 想让更多人在 DSH 内直接搜到并安装？完整流程（1024 Store / dsh-market 的收录方式、`dsh-plugin` topic、npm 发布、目录 PR 模板）见 **[docs/PUBLISHING.md](docs/PUBLISHING.md)**，仓库内已备好可直接复用的 [目录条目](docs/awesome-dsh-catalog-entry.json)。
 

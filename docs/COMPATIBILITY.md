@@ -4,13 +4,12 @@
 
 | 项目 | 值 | 依据 |
 | --- | --- | --- |
-| 运行中的 DSH | `0.2.2-rc.3` | 安装包 `app.asar` 内 `@deepseek-ai/dsh-desktop` 与 `@deepseek-ai/dsh-desktop-runtime` 的 `package.json` |
-| 官方最新 release | `dsh-v0.2.2-rc.3` | [deepseek-ai/DeepSeek-Harness releases](https://github.com/deepseek-ai/DeepSeek-Harness/releases/tag/dsh-v0.2.2-rc.3) |
+| 运行中的 DSH | `0.2.2-rc.5` | `dsh -V` 与本机安装包 |
 | 插件版本 | `1.1.1` | `package.json` |
 | Node.js | >= 20（仅构建时） | `engines.node` |
 | 宿主要求 | `>=0.2.2-rc.3` | `dsh.engines.dsh` |
 
-本插件就是在上述版本上开发并实际运行的，因此**与当前最新官方版本兼容**。DSH 内置插件清单里 `ui-sidebar-right`、`ui-sidebar-documentpreview`、`office-kit`、`ui-conversation` 等条目均存在，与本插件依赖的宿主能力一致。HTML 预览依赖宿主 `iframe[data-html-preview]` 标记（当前版本存在）；布局通过地址后缀与 DOM 双重判定，任一命中即生效。
+本插件就是在上述版本上开发并实际运行的，因此**与当前安装版本兼容**。DSH 内置插件清单里 `ui-sidebar-right`、`ui-sidebar-documentpreview`、`office-kit`、`ui-conversation` 等条目均存在，与本插件依赖的宿主能力一致。HTML 预览依赖宿主 `iframe[data-html-preview]` 标记（当前版本存在）；布局通过地址后缀与 DOM 双重判定，任一命中即生效。批注依赖宿主 PDF 预览的文字层（`data-pdf-page` / `data-pdf-text` / `data-document-zoom-surface`），文字层缺失时批注静默不生效，阅读与布局不受影响。
 
 > 无法承诺「未来所有 DSH 版本都兼容」——插件依赖宿主内部 DOM 与 slot 名称，这些不属于公开稳定 API。下面说明失效时的行为与复核方法。
 
@@ -22,10 +21,13 @@
   - `conversation.session.header.actions`
   - `sidebar.right.tab.document.actions`
 - `sidebarRight` — `mounted`（`getSnapshot` / `subscribe`）、`openTabs`（`getSnapshot` / `subscribe`）、`isExpanded()`、`active()`
+- `sessions`（提交批注时按需读取，不参与激活检查）— `list.getSnapshot().byId`、`scope(sessionId).get('conversation').send(text)`
 
 **DOM 钩子（稳定 data 属性，非构建哈希类名）**
 
 `data-rightbar-col`、`data-sidebar-right-panel`、`data-sidebar-right-session`、`data-sidebar-right-mode`、`data-sidebar-collapsed`、`data-textpreview-tool`、`data-excel-preview`、`data-slot="conversation.session.header.actions"`、`.fortune-zoom-container`
+
+批注额外依赖 PDF 预览层：`data-pdf-preview`、`data-pdf-page`、`data-pdf-text`、`data-document-zoom-surface`，以及 pdf.js 的文字层（`.textLayer`）。
 
 ## 失效时不会拖垮页面（v1.1.0 起）
 
@@ -53,9 +55,11 @@ DSH 发布新版本后，维护者按以下步骤复核（可提 PR）：
 3. 拖动分隔线，确认比例变化且刷新后保持；`←` / `→` / `Home` / 双击复位逐一验证。
 4. 打开设置，验证自动进入、三种布局预设、自动更新 / 暂停。
 5. 缩窄窗口，验证「文档 / 对话」切换、未发送输入保留、焦点不丢失。
-6. 退出 / 停用插件，确认宿主原生布局完全恢复、无残留样式与属性。
-7. 检查浏览器 Console 是否出现 `[dsh-document-view] client host contract changed` 警告——出现即表示宿主契约已变，需对照上表适配选择器。
-8. 更新本文件与 `locale/*.json` 的验证版本，发新版。
+6. 在 Word 或 PDF 里选中文字，验证浮条出现「删除线 / 批注」，保存后页面出现标记，缩放后标记仍贴合原文。
+7. 打开「批注 N」面板，验证定位、编辑、删除与「提交给 AI」；提交后右侧会话收到结构化清单，批注变为已提交。
+8. 退出 / 停用插件，确认宿主原生布局完全恢复、无残留样式与属性。
+9. 检查浏览器 Console 是否出现 `[dsh-document-view] client host contract changed` 警告——出现即表示宿主契约已变，需对照上表适配选择器。
+10. 更新本文件与 `locale/*.json` 的验证版本，发新版。
 
 ## 密钥与个人信息核查
 
