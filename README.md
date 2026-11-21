@@ -13,7 +13,7 @@
 [![Issues](https://img.shields.io/github/issues/Frank-Fan-1058/dsh-document-view?style=flat-square)](https://github.com/Frank-Fan-1058/dsh-document-view/issues)
 [![npm](https://img.shields.io/npm/v/dsh-document-view?style=flat-square)](https://www.npmjs.com/package/dsh-document-view)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.3-4c51bf?style=flat-square)](https://github.com/deepseek-ai/DeepSeek-Harness)
+[![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.5-4c51bf?style=flat-square)](https://github.com/deepseek-ai/DeepSeek-Harness)
 [![零网络请求](https://img.shields.io/badge/network-zero-2e7d32?style=flat-square)](SECURITY.md)
 
 > ⭐ If this saves you a few round trips, star the repo — it helps other DeepSeek Harness users discover the plugin in marketplaces.
@@ -140,9 +140,9 @@ See [SECURITY.md](SECURITY.md) and [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md
 
 ## Requirements & compatibility
 
-- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) Desktop / Web, verified on **v0.2.2-rc.3**.
+- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) Desktop / Web, verified on **v0.2.2-rc.5**.
 - Node.js >= 20 — **only for rebuilding from source**; not needed to install or use.
-- **Host requirement declared**: `dsh.engines.dsh = ">=0.2.2-rc.3"`. On older DSH versions the host refuses the install with `incompatible-version` instead of loading a plugin that would blank the page. Granular boundaries are in the [compatibility notes](docs/COMPATIBILITY.md).
+- **Host requirement declared**: `dsh.engines.dsh = ">=0.2.2-rc.3"` (verified through rc.5). On older DSH versions the host refuses the install with `incompatible-version` instead of loading a plugin that would blank the page. Granular boundaries are in the [compatibility notes](docs/COMPATIBILITY.md).
 
 > The plugin relies on the host DOM structure and slot names. If a DSH upgrade changes them, the plugin **disables itself safely and the page keeps working** (no white screen). Re-verify with the [upgrade checklist](docs/COMPATIBILITY.md).
 

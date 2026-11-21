@@ -13,7 +13,7 @@
 [![Issues](https://img.shields.io/github/issues/Frank-Fan-1058/dsh-document-view?style=flat-square)](https://github.com/Frank-Fan-1058/dsh-document-view/issues)
 [![npm](https://img.shields.io/npm/v/dsh-document-view?style=flat-square)](https://www.npmjs.com/package/dsh-document-view)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.3-4c51bf?style=flat-square)](https://github.com/deepseek-ai/DeepSeek-Harness)
+[![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.5-4c51bf?style=flat-square)](https://github.com/deepseek-ai/DeepSeek-Harness)
 [![零网络请求](https://img.shields.io/badge/network-zero-2e7d32?style=flat-square)](SECURITY.md)
 
 > ⭐ 如果它帮你省下了来回切换，给仓库点个 Star —— 这能让更多 DSH 用户在插件市场里发现它。
@@ -140,9 +140,9 @@ Markdown、PDF、Word、Excel、PPT 与**本地 HTML 文件**的渲染、编辑�
 
 ## 要求与兼容性
 
-- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 桌面版 / Web 版，已在 **v0.2.2-rc.3** 上验证通过。
+- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 桌面版 / Web 版，已在 **v0.2.2-rc.5** 上验证通过。
 - Node.js >= 20 —— **仅从源码重建时需要**；单纯安装使用不需要 Node.js。
-- **已声明宿主要求**：`dsh.engines.dsh = ">=0.2.2-rc.3"`——低于该版本 DSH 会拒绝安装并提示 `incompatible-version`，避免装上去白屏。更细的兼容边界见 [兼容性说明](docs/COMPATIBILITY.md)。
+- **已声明宿主要求**：`dsh.engines.dsh = ">=0.2.2-rc.3"`（已验证到 rc.5）——低于该版本 DSH 会拒绝安装并提示 `incompatible-version`，避免装上去白屏。更细的兼容边界见 [兼容性说明](docs/COMPATIBILITY.md)。
 
 > 插件依赖宿主的 DOM 结构与 slot 名称。DSH 升级后若这些内部结构变化，插件会**自动停用并保持页面可用**（不会白屏），随后按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 重验即可。
 
