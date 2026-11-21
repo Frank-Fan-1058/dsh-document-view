@@ -1,6 +1,6 @@
 {
   "name": "dsh-document-view",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Split document view for DeepSeek Harness: read a document in the center while the conversation stays on the right, mark up the page, and hand the review to the AI.",
   "type": "module",
   "main": "index.js",
@@ -18,7 +18,7 @@
     "client.js",
     "cordis.patch.yml",
     "README.md",
-    "README.en.md",
+    "README.zh.md",
     "LICENSE",
     "SECURITY.md",
     "CHANGELOG.md",

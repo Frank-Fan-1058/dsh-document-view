@@ -3,9 +3,9 @@
 
   <h1>dsh-document-view</h1>
 
-  <p><strong>边看文档，边聊 AI，边划批注。</strong><br />文档居中显示，当前会话留在右侧；在页面上划线批注，一键交给 AI 逐条改，改完改动处标绿。</p>
+  <p><strong>Read the document. Keep the conversation. Mark it up.</strong><br />A split document view for DeepSeek Harness: the file stays in the center, your AI chat stays on the right; strike out or comment on the page, send the review to the AI, and see each edit highlighted.</p>
 
-  <p>简体中文 · <a href="README.en.md">English →</a></p>
+  <p>English · <a href="README.zh.md">简体中文 →</a></p>
 </div>
 
 [![Stars](https://img.shields.io/github/stars/Frank-Fan-1058/dsh-document-view?style=flat-square&logo=github)](https://github.com/Frank-Fan-1058/dsh-document-view/stargazers)
@@ -16,210 +16,210 @@
 [![DSH](https://img.shields.io/badge/DSH-0.2.2--rc.3-4c51bf?style=flat-square)](https://github.com/deepseek-ai/DeepSeek-Harness)
 [![零网络请求](https://img.shields.io/badge/network-zero-2e7d32?style=flat-square)](SECURITY.md)
 
-> ⭐ 如果它帮你省下了来回切换，给仓库点个 Star —— 这能让更多 DSH 用户在插件市场里发现它。
+> ⭐ If this saves you a few round trips, star the repo — it helps other DeepSeek Harness users discover the plugin in marketplaces.
 
-![文档视图：中间是文档，右侧是当前会话](docs/screenshots/01-overview.png)
+![Document view: the document in the center with annotation marks, the conversation on the right](docs/screenshots/01-overview.png)
 
-> 以上为**真实界面截图**：会话栏与对话内容已打码，文档为示例协议（主体与价格均为虚构）。
+> Screenshots are **real captures**: the session sidebar and conversation are masked, and the document is a sample agreement with fictional parties and prices.
 
 <details>
-<summary>目录</summary>
+<summary>Table of contents</summary>
 
-- [30 秒装上](#30-秒装上)
-- [为什么需要它](#为什么需要它)
-- [适合谁](#适合谁)
-- [核心能力](#核心能力)
-- [隐私与安全](#隐私与安全)
-- [要求与兼容性](#要求与兼容性)
-- [安装](#安装)
-- [使用](#使用)
-- [常见问题](#常见问题)
-- [路线图](#路线图)
-- [参与贡献](#参与贡献)
-- [许可证](#许可证)
+- [Install in 30 seconds](#install-in-30-seconds)
+- [The problem](#the-problem)
+- [Who it is for](#who-it-is-for)
+- [Features](#features)
+- [Privacy & security](#privacy--security)
+- [Requirements & compatibility](#requirements--compatibility)
+- [Install](#install)
+- [Usage](#usage)
+- [FAQ](#faq)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 </details>
 
 ---
 
-## 30 秒装上
+## Install in 30 seconds
 
-已发布到 npm，一行命令即可：
+Published on npm — one command:
 
 ```sh
-# 官方 CLI
+# Official CLI
 dsh plugin --profile web add dsh-document-view
 
-# 或 1024 Store
+# Or 1024 Store
 dsh1024 plugin --profile web add dsh-document-view
 ```
 
-包地址：[npm / dsh-document-view](https://www.npmjs.com/package/dsh-document-view)（当前 `1.2.0`）。装完在 DSH 插件列表启用、刷新页面即可。其它装法见 [安装](#安装)。
+Package: [npm / dsh-document-view](https://www.npmjs.com/package/dsh-document-view) (currently `1.2.0`). Enable it in the DSH plugin list and refresh the page. Other install options are in [Install](#install).
 
-## 为什么需要它
+## The problem
 
-在 DSH 里打开一个文件，文档会占满右侧栏，正在进行的对话被挤走。想让 AI 对照文档解释、总结、改写，只能在「看文档」和「看对话」之间反复切换，上下文一直在丢；把内容复制进对话，又得反复粘贴、还容易截断。
+Open a file in DSH and it takes over the right sidebar, pushing your conversation away. Asking the AI to explain, summarize or rewrite against that document means constantly switching between "reading" and "chatting" — and losing context every time. Pasting the content into the chat means repeated copy-paste and truncated context.
 
-`dsh-document-view` 只做一件事：**把这两块同时留在屏幕上**。它不接管编辑器、不改动保存逻辑、也不碰你的文件 —— 只是重新排布窗口，让 DSH 原生的文档 / Office 预览和对话框并排工作。
+`dsh-document-view` does exactly one thing: **keeps both on screen**. It does not take over the editor, change save behavior, or touch your files. It only rearranges the window so DSH native document / Office preview and the chat panel work side by side.
 
-| | 默认布局 | 开启文档视图 |
+| | Default | Document view on |
 | --- | --- | --- |
-| 看文档 | 右侧栏独占 | 中间区域显示 |
-| 当前对话 | 被挤走，需要切回 | 右侧始终可见 |
-| 让 AI 对照文档回答 | 来回切换 / 反复粘贴 | 同屏完成 |
-| 编辑、保存、预览 | 原生功能 | **仍是原生功能** |
+| Document | Takes the right sidebar | Center area |
+| Conversation | Pushed away | Always visible on the right |
+| Ask AI about the document | Switch back and forth / paste | Same screen |
+| Editing / saving / preview | Native | **Still native** |
 
-## 适合谁
+## Who it is for
 
-- 读论文、报告、合同、需求文档时，想让 AI 边看边解释
-- 对着 Excel / PPT 核对数据，随时追问某一行、某一页
-- 一边改代码或 Markdown，一边让 AI 评审，不想来回切标签
-- 用大屏或多显示器，希望文档和对话各占一块
+- Reading papers, reports, contracts or specs while asking the AI about them
+- Checking Excel / PowerPoint data and following up on a specific row or slide
+- Editing code or Markdown while getting AI review, without switching tabs
+- Using a large or multi-monitor setup and wanting document and chat side by side
 
-## 核心能力
+## Features
 
-### 1. 文档与对话同屏
+### 1. Document and chat, side by side
 
-![文档视图：文档在中间并带三处批注标记，右侧是当前会话](docs/screenshots/01-overview.png)
+![Document view: the document in the center with three annotation marks, the conversation on the right](docs/screenshots/01-overview.png)
 
-打开任意文件后，在会话头部或文件标签的操作区点 **「文档协作」** 即可开启。拖动分隔线调整宽度，也可以用 `←` / `→` 微调、`Home` 复位、双击分隔线恢复默认比例。开关和比例**按会话分别记住**。
+Open any file, then click **Document view** in the conversation header actions or the file tab actions. Drag the divider to resize; `←` / `→` nudge it, `Home` resets the ratio, and double-clicking the divider restores the default. The toggle and ratio are **saved per session**.
 
-### 2. 划线批注，一键交给 AI
+### 2. Mark up the page, hand the review to the agent
 
-![批注面板：三处标记按页列出，可定位、编辑、删除，底部是「提交给 AI」](docs/screenshots/02-annotations.png)
+![Annotation panel: three marks listed by page, jump / edit / delete, with "Send to AI" at the bottom](docs/screenshots/02-annotations.png)
 
-在 Word / PDF / PPT 的阅读页里选中文字，浮条上会出现两个动作：
+Select text in the Word / PDF / PowerPoint page and a small toolbar appears:
 
-- **删除线**：标记这段应删掉，页面上直接画删除线。
-- **批注**：写一句修改意见，页面上以黄底虚线下划线加编号标出。
+- **Strikethrough** marks a passage for deletion and draws the line on the page.
+- **Comment** records your change request; the page shows an amber highlight with a dashed underline and a numbered badge.
 
-文档工具栏的 **「批注 N」** 打开汇总面板：按页列出每条批注，可定位、改意见、删除。点 **「提交给 AI」**，插件把「文件路径 + 页码 + 目标原文 + 前后文 + 意见 + 处理约定」整理成一条结构化消息发进右侧对话，AI 按条改原文件，改完原生预览自动跟随磁盘更新。批注按文件路径保存在浏览器本地，刷新或重启后仍在。
+The **Annotate N** button in the document toolbar opens the review list: jump to a mark, edit the comment, delete it. **Send to AI** turns the whole list into one structured message (file path, page, exact target text, surrounding context, request, working conventions) in the right-hand conversation. The agent edits the original file, and the native preview follows the disk change. Annotations are kept per file path in browser storage, so a refresh or restart keeps them.
 
-> Excel 预览是插件自绘表格，没有文字层，因此不在本版批注范围内。
-> Word 的人工编辑本轮未做：预览工具栏自带的「用应用打开」可把文件交给系统 Word / WPS，保存后预览会自动刷新。
+> Excel previews are an in-plugin canvas without a text layer, so they are outside this version.
+> Manual Word editing is not part of this release: the preview toolbar already has an "open in app" control that hands the file to Word / WPS; saving there refreshes the preview.
 
-### 3. 改完的位置会标绿
+### 3. See where the edit landed
 
-批注提交后，原引文在新文件里已经找不到（说明这段被改过），插件就用批注存下的前后文锚点重新定位：
+Once a review is sent, the quoted text no longer exists in the edited file. The plugin then re-anchors the mark with the text that surrounded it:
 
-- 被替换的段落：绿色底 + 绿底边，角标变成 **✓**；
-- 整段被删：前文与后文的接缝处一条 2px 绿色竖线；
-- 文字没动的批注保持原样（变淡显示），不会误标。
+- a replaced passage gets a green highlight, a green underline and a **✓** badge;
+- a deleted passage gets a 2px green caret in the seam between its neighbours;
+- a mark whose text did not change stays as it was (dimmed) and is never marked green.
 
-多处批注各自独立定位；找不到前后文的批注不猜、不标。
+Each mark is resolved on its own; a mark without surrounding context is reported, not guessed.
 
-### 4. 设置与自动进入
+### 4. Settings and auto-enter
 
-![文档协作设置：自动进入开关与三种布局预设](docs/screenshots/03-settings.png)
+![Document view settings: auto-enter toggle and the three layout presets](docs/screenshots/03-settings.png)
 
-开关旁的箭头打开设置：
+The arrow next to the toggle opens settings:
 
-- **查看文档时自动进入**（默认关闭）：只在你主动点击文件或文件标签时触发，后台文件操作不会打扰你；手动退出后，同一个文件不会反复自动打开。
-- **文档优先 / 均衡 / 对话优先** 三种预设，按会话保存。
-- **自动更新 / 已暂停**：沿用宿主原生的文件变化监听，需要仔细阅读时可暂停跟随，继续后显示最新内容，并保留原生预览的页码与缩放状态。
+- **Auto-enter on document view** (off by default) — fires only when *you* click a file or file tab; background file operations never open it. After you exit manually, the same file will not re-open repeatedly.
+- **Document-first / Balanced / Chat-first** presets, saved per session.
+- **Auto update / Paused** — reuses the host native file watcher. Pause when you want to read carefully; resuming shows the latest content while preserving the native viewer page and zoom state.
 
-### 5. 窄窗口也能用
+### 5. Works in narrow windows
 
-窗口不够宽时自动切换为「文档 / 对话」单栏切换，**未发送的输入不会丢**；宽转窄时若焦点落在即将隐藏的区域，会移到可见的切换按钮上。
+When the window is too narrow it switches to a single-column **Document / Chat** toggle. **Unsent input is preserved**, and focus moves to the visible switch if the current focus would be hidden.
 
-### 6. 只用原生能力
+### 6. Native all the way down
 
-Markdown、PDF、Word、Excel、PPT 与**本地 HTML 文件**的渲染、编辑、保存与预览，全部继续由 DSH 自带的查看器和 Office 引擎负责。本插件**不读取、不写入、不上传**你的文件，也不重复实现任何编辑功能。停用插件即恢复默认布局。
+Rendering, editing, saving and preview of Markdown, PDF, Word, Excel, PowerPoint and local HTML files remain entirely with DSH own viewers and Office engine. The plugin **never reads, writes or uploads your files** and reimplements no editing feature. Disable it and the default layout returns.
 
-## 隐私与安全
+## Privacy & security
 
-插件会接触你的工作界面，所以这一点值得单独说清楚 —— 以下每条都能从源码核对：
+The plugin touches your workspace UI, so every claim below is verifiable from the source:
 
-- **零网络请求**：没有任何 `http(s)://` 地址、`XMLHttpRequest`、`WebSocket`。唯一的 `fetch` 是读你刚打开的那个 HTML 文件（走宿主自己的 `dsh-resource://` 本地协议），用于自建 HTML 预览。
-- **零文件读写**：不调用任何读写文件的接口，不碰编辑器内容。批注只读取页面文字层里的选中文字，不打开原文件。
-- **零凭据**：包内不含 API Key、Token、密码、Cookie 或任何密钥；没有 `.env`、没有配置文件。
-- **只存两类本地数据**：`dsh.document-view.v1` 保存「自动进入开关 + 每个会话的分栏比例」；`dsh.document-view.annotations.v2/` 下每条批注一个键（文件路径、页码、选中文字、意见与状态），多个窗口同时打开时互不覆盖；两者都只在浏览器 `localStorage`，不上传、不写回文件。
-- **作用域收窄**：所有样式限定在插件自己加的 `[data-fdc-*]` 属性下，不改宿主全局样式；不移动、不克隆、不重新挂载任何 React 组件，只调整窗口网格的几何尺寸。
+- **No network calls** — no `http(s)://` address, `XMLHttpRequest` or `WebSocket`. The single `fetch` reads the HTML file you just opened, through the host's own local `dsh-resource://` protocol.
+- **No file reads or writes** — no filesystem or editor read/write APIs. Annotations only read the selected text from the rendered page text layer; the original file is never opened.
+- **No credentials** — no API keys, tokens, passwords, cookies, `.env` or config files ship in the package.
+- **Two local stores only** — `dsh.document-view.v1` holds the auto-enter toggle and per-session ratios; `dsh.document-view.annotations.v2/` holds one key per annotation (file path, page, quoted text, request, status), so several windows can add marks without overwriting each other. Both stay in browser `localStorage`; nothing is uploaded or written back to a file.
+- **Narrow CSS scope** — all styles are scoped to the plugin own `[data-fdc-*]` attributes. No host components are moved, cloned or remounted; only the window grid geometry changes.
 
-详见 [SECURITY.md](SECURITY.md) 与 [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md)。
+See [SECURITY.md](SECURITY.md) and [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 
-## 要求与兼容性
+## Requirements & compatibility
 
-- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 桌面版 / Web 版，已在 **v0.2.2-rc.3** 上验证通过。
-- Node.js >= 20 —— **仅从源码重建时需要**；单纯安装使用不需要 Node.js。
-- **已声明宿主要求**：`dsh.engines.dsh = ">=0.2.2-rc.3"`——低于该版本 DSH 会拒绝安装并提示 `incompatible-version`，避免装上去白屏。更细的兼容边界见 [兼容性说明](docs/COMPATIBILITY.md)。
+- [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) Desktop / Web, verified on **v0.2.2-rc.3**.
+- Node.js >= 20 — **only for rebuilding from source**; not needed to install or use.
+- **Host requirement declared**: `dsh.engines.dsh = ">=0.2.2-rc.3"`. On older DSH versions the host refuses the install with `incompatible-version` instead of loading a plugin that would blank the page. Granular boundaries are in the [compatibility notes](docs/COMPATIBILITY.md).
 
-> 插件依赖宿主的 DOM 结构与 slot 名称。DSH 升级后若这些内部结构变化，插件会**自动停用并保持页面可用**（不会白屏），随后按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 重验即可。
+> The plugin relies on the host DOM structure and slot names. If a DSH upgrade changes them, the plugin **disables itself safely and the page keeps working** (no white screen). Re-verify with the [upgrade checklist](docs/COMPATIBILITY.md).
 
-## 安装
+## Install
 
-**方式零：从 npm 安装（推荐，解锁一键安装）**
+**Option 0 — from npm (recommended, unlocks one-line install)**
 
 ```sh
 dsh1024 plugin --profile web add dsh-document-view
-# 或
+# or
 dsh plugin --profile web add dsh-document-view
 ```
 
-**方式一：本地目录安装**
+**Option 1 — local directory**
 
 ```sh
 git clone https://github.com/Frank-Fan-1058/dsh-document-view.git
 ```
 
-然后打开 DSH → **插件 → 添加插件**，选中 `dsh-document-view` 目录 → 在插件列表启用 → 刷新页面（或重启 DSH）。
+Then in DSH: **Plugins → Add plugin**, pick the `dsh-document-view` directory, enable it, and refresh the page (or restart DSH).
 
-**方式二：打包成 tarball**
+**Option 2 — tarball**
 
 ```sh
 npm pack
 ```
 
-把生成的 `dsh-document-view-*.tgz` 解压到任意目录，再按方式一第 2 步指向该目录。
+Extract `dsh-document-view-*.tgz` anywhere, then point step 2 of Option 1 at that directory.
 
-**方式三：从源码构建**
+**Option 3 — build from source**
 
 ```sh
-npm install            # 仅构建时需要
+npm install            # only needed to rebuild
 node scripts/build.mjs
 node scripts/verify.mjs
 ```
 
-`src/` 是源码，`client.js` 是自包含构建产物（内联全部 CSS，无运行时依赖）。**改了 `src/` 必须重建** `client.js`，不要手改产物。
+`src/` is the source; `client.js` is the self-contained build artifact (all CSS inlined, no runtime dependencies). **Rebuild `client.js` after any `src/` change** — do not hand-edit the artifact.
 
-> `file:` 依赖是实体拷贝：改了源码要删掉 `node_modules/<包名>` 再重装，运行副本才会更新。
+> `file:` dependencies are physical copies: after editing source, remove `node_modules/<package>` and reinstall so the running copy updates.
 
-## 使用
+## Usage
 
-1. 在右侧栏打开一个文件（Markdown / PDF / Office 均可）。
-2. 点会话头部或文件标签上的 **「文档视图」**。
-3. 拖动分隔线调宽度；`←` / `→` 微调，`Home` 或双击分隔线复位。
-4. 点开关旁的箭头进设置，按需开启「自动进入」或选布局预设。
-5. 再点一次开关（或会话顶部 / 文件顶部的退出入口）即可退出，恢复默认布局。
+1. Open a file in the right sidebar (Markdown / PDF / Office).
+2. Click **Document view** in the conversation header or file tab actions.
+3. Drag the divider; `←` / `→` to nudge, `Home` or double-click to reset.
+4. Open settings via the arrow for auto-enter and layout presets.
+5. Click the toggle again (or the exit entry in the session / file header) to return to the default layout.
 
-## 常见问题
+## FAQ
 
-**会影响我已有的文档编辑器或 Office 插件吗？** 不会。本插件不改 Univer、Office 转换服务或任何原生编辑器，只调整窗口布局。
+**Will it affect my editors or Office plugins?** No. It changes layout only — Univer, Office converters and native editors are untouched.
 
-**我的文件会被读取或上传吗？** 不会。插件不发网络请求、不读写文件，只保存开关与比例两项偏好。
+**Are my files read or uploaded?** No. No network requests, no file I/O, only the toggle and ratios are stored.
 
-**关掉插件后布局会残留吗？** 不会。卸载时会移除所有注入的样式、属性、分隔线与监听，恢复宿主原生布局。
+**Does anything remain after disabling?** No. All injected styles, attributes, the divider and listeners are removed on teardown.
 
-**升级 DSH 后失效了怎么办？** 插件会安全地自动停用（页面照常可用）。请提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 并附上 DSH 版本，维护者按 [升级复核清单](docs/COMPATIBILITY.md#升级复核清单) 适配。
+**What if a DSH upgrade breaks it?** It disables itself safely and the page stays usable. Open an [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) with your DSH version.
 
-**支持哪些文件类型？** 宿主原生支持什么就支持什么：Markdown、PDF、Word、Excel、PPT、本地 HTML 等，本插件不做格式限制。
+**Which file types are supported?** Whatever the host supports natively — Markdown, PDF, Word, Excel, PowerPoint, local HTML, etc. The plugin adds no format restrictions.
 
-## 路线图
+## Roadmap
 
-已发布：v1.0.0 首个第三方可安装版本、v1.1.0 双语文档与安全兜底、v1.1.1 npm trusted publishing、v1.2.0 文档批注与改动高亮。
+Shipped: v1.0.0 first third-party installable release, v1.1.0 bilingual docs and safe-deactivation fallback, v1.1.1 npm trusted publishing, v1.2.0 page annotations and edit highlighting.
 
-已收录：npm 包、1024 Store / awesome 目录（PR #942 已合并）、GitHub `dsh-plugin` topic。接下来（按反馈排期）：跟进 dsh-market 目录 PR 审核；DSH 新版本发布后按升级复核清单重验；视反馈补充更多语言与布局预设。完整清单见 [ROADMAP.md](ROADMAP.md)，版本记录见 [CHANGELOG.md](CHANGELOG.md)。
+Already listed: npm package, 1024 Store / awesome catalog (PR #942 merged), and the GitHub `dsh-plugin` topic. Next (feedback-driven): follow up on the dsh-market catalog PR review; re-verify after new DSH releases; add more locales and layout presets. See [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
 
-## 参与贡献
+## Contributing
 
-欢迎提 [Issue](https://github.com/Frank-Fan-1058/dsh-document-view/issues) 与 PR，流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。改 `src/` 后请一并提交重建后的 `client.js`；涉及界面文案时同步更新 `locale/en.json` 与 `locale/zh.json`。提交界面截图前请先对会话、文件名、账号等打码。
+Issues and PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Rebuild `client.js` when changing `src/`; update both `locale/en.json` and `locale/zh.json` when changing UI copy. Never put real sessions, file names, accounts or personal data into illustrations or examples.
 
-想让更多人在 DSH 内直接搜到并安装？完整流程（1024 Store / dsh-market 的收录方式、`dsh-plugin` topic、npm 发布、目录 PR 模板）见 **[docs/PUBLISHING.md](docs/PUBLISHING.md)**，仓库内已备好可直接复用的 [目录条目](docs/awesome-dsh-catalog-entry.json)。
+Want more people to find it inside DSH? See **[docs/PUBLISHING.md](docs/PUBLISHING.md)** for the full playbook (1024 Store, dsh-market, the `dsh-plugin` GitHub topic, npm publishing) and the ready-to-use [catalog entry](docs/awesome-dsh-catalog-entry.json).
 
-## 许可证
+## License
 
 [MIT](LICENSE) © 2026 dsh-document-view contributors
 
 ---
 
-<p align="center">觉得有用？<a href="https://github.com/Frank-Fan-1058/dsh-document-view">给个 ⭐ Star</a> · <a href="https://github.com/Frank-Fan-1058/dsh-document-view/issues">反馈问题</a> · <a href="README.en.md">English README</a></p>
+<p align="center">Found it useful? <a href="https://github.com/Frank-Fan-1058/dsh-document-view">Give it a ⭐ Star</a> · <a href="https://github.com/Frank-Fan-1058/dsh-document-view/issues">Report an issue</a> · <a href="README.zh.md">中文 README</a></p>
